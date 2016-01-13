@@ -1,0 +1,15 @@
+{% extends "layout.html.twig" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+{% for recense in recenses %}
+<recense>
+    <h2><a class="recenseTitle" href="/recense/{{ recense.id }}>{{ recense.nom }}">{{ recense.prenom }}</a></h2>
+    <p>{{ recense.nomUsage }}</p>
+    <p>{{ recense.dateNaissance }}</p>
+    <p>{{ recense.adresseMail }}</p>
+    <p>{{ recense.telephonePortable }}</p>
+</recense>
+{% endfor %}
+{% endblock %}

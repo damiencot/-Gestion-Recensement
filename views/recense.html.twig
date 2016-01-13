@@ -1,0 +1,18 @@
+{% extends "layout.html.twig" %}
+
+{% block title %}{{ recense.nom }}{{% endblock %}
+
+{% block content %}
+<p>
+    <h2>{{ recense.nom }}</h2>
+    <p>{{ recense.prenom }}</p>
+
+    <h3>Recense</h3>
+    {% for recense in recenses %}
+        <strong>{{ recense.nom }}</strong> said : {{ recense.prenom }}<br>
+    {% else %}
+        No recense yet.
+    {% endfor %}
+
+</p>
+{% endblock %}

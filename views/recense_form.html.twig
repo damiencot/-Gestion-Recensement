@@ -1,0 +1,108 @@
+{% extends 'layout.html.twig' %}
+{% set adminMenu = true %}
+
+
+
+{% block content %}
+<h2 class="text-center">{{ block('title') }}</h2>
+{% for flashMessage in app.session.flashbag.get('success') %}
+<div class="alert alert-success">
+    {{ flashMessage }}
+</div>
+{% endfor %}
+
+<div class="row">
+    <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
+        <ul class="nav nav-tabs nav-justified">
+            <li class="active"><a href="#articles" data-toggle="tab">État-Civil</a></li>
+            <li><a href="#users" data-toggle="tab">Adresse</a></li>
+            <li><a href="#recenses" data-toggle="tab">Filiation</a></li>
+            <li><a href="#recenses" data-toggle="tab">Autres</a></li>
+            <li><a href="#recenses" data-toggle="tab">Recensement</a></li>
+            <li><a href="#recenses" data-toggle="tab">Documents</a></li>
+            
+        </ul>
+    </div>
+</div>
+
+<div class="well">
+{{ form_start(recenseForm, { 'attr': {'class': 'form-horizontal'} }) }}
+    <div class="form-group">
+        {{ form_label(recenseForm.nom, null, { 'label_attr':  {
+            'class': 'col-sm-4 control-label'
+        }}) }}
+        <div class="col-sm-6">
+            {{ form_errors(recenseForm.nom) }}
+            {{ form_widget(recenseForm.nom, { 'attr':  {
+                'class': 'form-control'
+            }}) }}
+        </div>
+    </div>
+    <div class="form-group">
+        {{ form_label(recenseForm.prenom, null, { 'label_attr':  {
+            'class': 'col-sm-4 control-label'
+        }}) }}
+        <div class="col-sm-6">
+            {{ form_errors(recenseForm.prenom) }}
+            {{ form_widget(recenseForm.prenom, { 'attr':  {
+                'class': 'form-control',
+                'rows': '8'
+            }}) }}
+        </div>
+    </div>
+    <div class="form-group">
+        {{ form_label(recenseForm.nomUsage, null, { 'label_attr':  {
+            'class': 'col-sm-4 control-label'
+        }}) }}
+        <div class="col-sm-6">
+            {{ form_errors(recenseForm.nomUsage) }}
+            {{ form_widget(recenseForm.nomUsage, { 'attr':  {
+                'class': 'form-control',
+                'rows': '8'
+            }}) }}
+        </div>
+    </div>
+    <div class="form-group">
+        {{ form_label(recenseForm.dateNaissance, null, { 'label_attr':  {
+            'class': 'col-sm-4 control-label'
+        }}) }}
+        <div class="col-sm-6">
+            {{ form_errors(recenseForm.dateNaissance) }}
+            {{ form_widget(recenseForm.dateNaissance, { 'attr':  {
+                'class': 'form-control',
+                'rows': '8'
+            }}) }}
+        </div>
+    </div>
+    <div class="form-group">
+        {{ form_label(recenseForm.adresseMail, null, { 'label_attr':  {
+            'class': 'col-sm-4 control-label'
+        }}) }}
+        <div class="col-sm-6">
+            {{ form_errors(recenseForm.adresseMail) }}
+            {{ form_widget(recenseForm.adresseMail, { 'attr':  {
+                'class': 'form-control',
+                'rows': '8'
+            }}) }}
+        </div>
+    </div>
+    <div class="form-group">
+        {{ form_label(recenseForm.telephonePortable, null, { 'label_attr':  {
+            'class': 'col-sm-4 control-label'
+        }}) }}
+        <div class="col-sm-6">
+            {{ form_errors(recenseForm.telephonePortable) }}
+            {{ form_widget(recenseForm.telephonePortable, { 'attr':  {
+                'class': 'form-control',
+                'rows': '8'
+            }}) }}
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-4 col-sm-3">
+            <input type="submit" class="btn btn-primary" value="Save" />
+        </div>
+    </div>
+{{ form_end(recenseForm) }}
+</div>
+{% endblock %}
