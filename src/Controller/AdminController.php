@@ -4,11 +4,9 @@ namespace MicroCMS\Controller;
 
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
-use MicroCMS\Domain\Article;
 use MicroCMS\Domain\User;
 use MicroCMS\Domain\Recense;
 use MicroCMS\Form\Type\RecenseType;
-use MicroCMS\Form\Type\ArticleType;
 use MicroCMS\Form\Type\UserType;
 
 class AdminController {
@@ -19,21 +17,20 @@ class AdminController {
      * @param Application $app Silex application
      */
     public function indexAction(Application $app) {
-        //$articles = $app['dao.article']->findAll();
         $recenses = $app['dao.recense']->findAll();
         $users = $app['dao.user']->findAll();
         return $app['twig']->render('admin.html.twig', array(
-            'recenses' => $recenses,
-            'users' => $users));
+                    'recenses' => $recenses,
+                    'users' => $users));
     }
-    
-     /**
+
+    /**
      * Add recense controller.
      *
      * @param Request $request Incoming request
      * @param Application $app Silex application
      */
-    public function addRecenseAction(Request $request, Application $app)    {
+    public function addRecenseAction(Request $request, Application $app) {
         $recense = new Recense();
         $recenseForm = $app ['formfactory']->create(new RecenseType(), $recense);
         $recenseForm->handleRequest($request);
@@ -42,10 +39,27 @@ class AdminController {
             $app['session']->getFlashBag()->add('success', 'the recense was successfully created.');
         }
         return $app['twig']->render('recense_form.html.twig', array(
-            'prenom' => 'New recense',
-            'recenseForm' => $recenseForm->createView()));
+                    'prenom' => 'New recense',
+                    'recenseForm' => $recenseForm->createView()));
+        
+        
     }
-    
+
+    public function addResidenceAction(Request $request, Application $app) {
+        $residence = new Residence();
+        $residenceForm = $app['formfactory']->create(new ResidenceType(), $residence);
+        $residenceForm->handleRequest($request);
+        if ($residenceForm->isSubmitted() && $residenceForm->Valid()) {
+            $app['dao.residence']->save($residence);
+            $app['session']->getFlashBag()->add('success', ' the residence was successfully created');
+        }
+
+        return $app['twig']->render('residence_form.html.twig', array(
+                    'adresse' => 'New residence',
+                    'residenceForm' => $residenceForm->createView()));
+        
+    }
+
     /**
      * Edit recense controller.
      *
@@ -62,11 +76,23 @@ class AdminController {
             $app['session']->getFlashBag()->add('success', 'The recense was succesfully updated.');
         }
         return $app['twig']->render('recense_form.html.twig', array(
-            'prenom' => 'Edit recensee',
-            'recenseForm' => $recenseForm->createView()));
+                    'prenom' => 'Edit recensee',
+                    'recenseForm' => $recenseForm->createView()));
     }
-    
-    
+
+    public function editResidenceAction($id, Request $request, Application $app) {
+        $residence = $app['dao.residence']->find($id);
+        $residenceForm = $app['form.factory']->create(new ResidenceType(), $residence);
+        $residenceForm->handleRequest($request);
+        if ($residenceForm->isSubmitted() && $residenceForm->isValid()) {
+            $app['dao.residence']->save($residence);
+            $app['session']->getFlashBag()->add('success', 'The residence was succesfully updated.');
+        }
+        return $app['twig']->render('residence_form.html.twig', array(
+                    'adresse' => 'New residence',
+                    'residenceForm' => $residenceForm->createView()));
+    }
+
     /**
      * Delete recense controller.
      *
@@ -79,63 +105,7 @@ class AdminController {
         $app['session']->getFlashBag()->add('success', 'The recense was succesfully removed.');
         return $app->redirect('/admin');
     }
-    
 
-    /**
-     * Add article controller.
-     *
-     * @param Request $request Incoming request
-     * @param Application $app Silex application
-     */
-    public function addArticleAction(Request $request, Application $app) {
-        $article = new Article();
-        $articleForm = $app['form.factory']->create(new ArticleType(), $article);
-        $articleForm->handleRequest($request);
-        if ($articleForm->isSubmitted() && $articleForm->isValid()) {
-            $app['dao.article']->save($article);
-            $app['session']->getFlashBag()->add('success', 'The article was successfully created.');
-        }
-        return $app['twig']->render('article_form.html.twig', array(
-            'title' => 'New article',
-            'articleForm' => $articleForm->createView()));
-    }
-    
-
-    /**
-     * Edit article controller.
-     *
-     * @param integer $id Article id
-     * @param Request $request Incoming request
-     * @param Application $app Silex application
-     */
-    public function editArticleAction($id, Request $request, Application $app) {
-        $article = $app['dao.article']->find($id);
-        $articleForm = $app['form.factory']->create(new ArticleType(), $article);
-        $articleForm->handleRequest($request);
-        if ($articleForm->isSubmitted() && $articleForm->isValid()) {
-            $app['dao.article']->save($article);
-            $app['session']->getFlashBag()->add('success', 'The article was succesfully updated.');
-        }
-        return $app['twig']->render('article_form.html.twig', array(
-            'title' => 'Edit article',
-            'articleForm' => $articleForm->createView()));
-    }
-
-    
-    /**
-     * Delete article controller.
-     *
-     * @param integer $id Article id
-     * @param Application $app Silex application
-     */
-    public function deleteArticleAction($id, Application $app) {
-        // Delete the article
-        $app['dao.article']->delete($id);
-        $app['session']->getFlashBag()->add('success', 'The article was succesfully removed.');
-        return $app->redirect('/admin');
-    }
-
-   
     /**
      * Add user controller.
      *
@@ -155,13 +125,13 @@ class AdminController {
             $encoder = $app['security.encoder.digest'];
             // compute the encoded password
             $password = $encoder->encodePassword($plainPassword, $user->getSalt());
-            $user->setPassword($password); 
+            $user->setPassword($password);
             $app['dao.user']->save($user);
             $app['session']->getFlashBag()->add('success', 'The user was successfully created.');
         }
         return $app['twig']->render('user_form.html.twig', array(
-            'title' => 'New user',
-            'userForm' => $userForm->createView()));
+                    'title' => 'New user',
+                    'userForm' => $userForm->createView()));
     }
 
     /**
@@ -181,13 +151,13 @@ class AdminController {
             $encoder = $app['security.encoder_factory']->getEncoder($user);
             // compute the encoded password
             $password = $encoder->encodePassword($plainPassword, $user->getSalt());
-            $user->setPassword($password); 
+            $user->setPassword($password);
             $app['dao.user']->save($user);
             $app['session']->getFlashBag()->add('success', 'The user was succesfully updated.');
         }
         return $app['twig']->render('user_form.html.twig', array(
-            'title' => 'Edit user',
-            'userForm' => $userForm->createView()));
+                    'title' => 'Edit user',
+                    'userForm' => $userForm->createView()));
     }
 
     /**
@@ -202,4 +172,5 @@ class AdminController {
         $app['session']->getFlashBag()->add('success', 'The user was succesfully removed.');
         return $app->redirect('/admin');
     }
+
 }

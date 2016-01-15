@@ -8,18 +8,19 @@
 
 namespace MicroCMS\DAO;
 
-
 use MicroCMS\Domain\Recense;
+
 /**
  * Description of RecenseDAO
  *
  * @author thouars
  */
-class RecenseDAO  extends DAO{
+class RecenseDAO extends DAO {
+
     //put your code here
-    
-    
-      public function findAll() {
+
+
+    public function findAll() {
         $sql = "select * from recense order by id desc";
         $result = $this->getDb()->fetchAll($sql);
 
@@ -31,9 +32,8 @@ class RecenseDAO  extends DAO{
         }
         return $recenses;
     }
-    
-    
-     public function find($id) {
+
+    public function find($id) {
         $sql = "select * from recense where id=?";
         $row = $this->getDb()->fetchAssoc($sql, array($id));
 
@@ -43,8 +43,7 @@ class RecenseDAO  extends DAO{
             throw new \Exception("No recense matching id " . $id);
         }
     }
-    
-    
+
     public function save(Recense $recense) {
         $recenseData = array(
             'id' => $recense->getId(),
@@ -54,7 +53,7 @@ class RecenseDAO  extends DAO{
             'dateNaissance' => $recense->getDateNaissance(),
             'adresseMail' => $recense->getAdresseMail(),
             'telephonePortable' => $recense->getTelephonePortable(),
-            );
+        );
 
         if ($recense->getId()) {
             // The recense has already been saved : update it
@@ -67,8 +66,8 @@ class RecenseDAO  extends DAO{
             $recense->setId($id);
         }
     }
-    
-     public function delete($id) {
+
+    public function delete($id) {
         // Delete the recense
         $this->getDb()->delete('recense', array('id' => $id));
     }
@@ -90,4 +89,5 @@ class RecenseDAO  extends DAO{
         $recense->setTelephonePortable($row['telephonePortable']);
         return $recense;
     }
+
 }

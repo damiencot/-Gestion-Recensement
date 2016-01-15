@@ -4,7 +4,6 @@ namespace MicroCMS\Controller;
 
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
-use MicroCMS\Domain\Article;
 use MicroCMS\Domain\Recense;
 
 class ApiController {
@@ -21,7 +20,7 @@ class ApiController {
         // Convert an array of objects ($recense) into an array of associative arrays ($responseData)
         $responseData = array();
         foreach ($recenses as $recense) {
-            $responseData[] = $this->buildArticleArray($recense);
+            $responseData[] = $this->buildRecenseArray($recense);
         }
         // Create and return a JSON response
         return $app->json($responseData);
@@ -37,7 +36,7 @@ class ApiController {
      */
     public function getRecenseAction($id, Application $app) {
         $recense = $app['dao.recense']->find($id);
-        $responseData = $this->buildArticleArray($recense);
+        $responseData = $this->buildRecenseArray($recense);
         // Create and return a JSON response
         return $app->json($responseData);
     }
@@ -67,7 +66,7 @@ class ApiController {
         $recense->setAdresseMail($request->request->get('adresseMail'));
         $recense->setTelephonePortable($request->request->get('telephonePortable'));
         $app['dao.recense']->save($recense);
-        $responseData = $this->buildArticleArray($recense);
+        $responseData = $this->buildRecenseArray($recense);
         return $app->json($responseData, 201);  // 201 = Created
     }
 
@@ -105,20 +104,15 @@ class ApiController {
         return $data;
     }
     
-   
-    /**
-     * Converts an Article object into an associative array for JSON encoding
-     *
-     * @param Article $article Article object
-     *
-     * @return array Associative array whose fields are the article properties.
-     */
-    private function buildArticleArray(Article $article) {
-        $data  = array(
-            'id' => $article->getId(),
-            'title' => $article->getTitle(),
-            'content' => $article->getContent()
-            );
-        return $data;
+    
+    private function buildResidenceArray(Residence $residence) {
+       $date = array (
+           'id' => $residence->getId(),
+           'adresse' => $residence->getAdresse(),
+           'telephone' => $residence->getTelephone()
+       );
+       return $date;
     }
+    
+  
 }

@@ -29,7 +29,7 @@ class HomeController {
      * @param integer $id Article id
      * @param Request $request Incoming request
      * @param Application $app Silex application
-     */
+     
     public function articleAction($id, Request $request, Application $app) {
         $article = $app['dao.article']->find($id);
         $user = $app['security']->getToken()->getUser();
@@ -52,7 +52,7 @@ class HomeController {
             'comments' => $comments,
             'commentForm' => $commentFormView));
     }
-
+    */
     /**
      * User login controller.
      *
@@ -65,4 +65,6 @@ class HomeController {
             'last_username' => $app['session']->get('_security.last_username'),
             ));
     }
+    
+    
 }

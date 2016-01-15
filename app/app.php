@@ -57,17 +57,13 @@ if (isset($app['debug']) && $app['debug']) {
 $app['dao.recense'] = $app->share(function ($app) {
    return new MicroCMS\DAO\RecenseDAO($app['db']); 
 });
-$app['dao.article'] = $app->share(function ($app) {
-    return new MicroCMS\DAO\ArticleDAO($app['db']);
+
+$app['dao.residence'] = $app->share(function ($app) {
+    return new MicroCMS\DAO\ResidenceDAO($app['db']);
 });
+
 $app['dao.user'] = $app->share(function ($app) {
     return new MicroCMS\DAO\UserDAO($app['db']);
-});
-$app['dao.comment'] = $app->share(function ($app) {
-    $commentDAO = new MicroCMS\DAO\CommentDAO($app['db']);
-    $commentDAO->setArticleDAO($app['dao.article']);
-    $commentDAO->setUserDAO($app['dao.user']);
-    return $commentDAO;
 });
 /*
 // Register error handler
