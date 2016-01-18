@@ -6,8 +6,10 @@ use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use MicroCMS\Domain\User;
 use MicroCMS\Domain\Recense;
+use MicroCMS\Domain\Villes;
 use MicroCMS\Form\Type\RecenseType;
-use MicroCMS\Form\Type\UserType;
+use MicroCMS\Form\Type\VillesType;
+
 
 class AdminController {
 
@@ -18,10 +20,9 @@ class AdminController {
      */
     public function indexAction(Application $app) {
         $recenses = $app['dao.recense']->findAll();
-        $users = $app['dao.user']->findAll();
-        return $app['twig']->render('admin.html.twig', array(
-                    'recenses' => $recenses,
-                    'users' => $users));
+        return $app['twig']->render('admin.html.twig', array(       
+            'recenses' => $recenses));
+
     }
 
     /**

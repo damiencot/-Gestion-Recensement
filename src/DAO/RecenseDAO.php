@@ -17,14 +17,13 @@ use MicroCMS\Domain\Recense;
  */
 class RecenseDAO extends DAO {
 
-    //put your code here
-
 
     public function findAll() {
-        $sql = "select * from recense order by id desc";
+        $sql = "SELECT r.id,r.nom,r.prenom,r.nomUsage,r.dateNaissance,r.adresseMail,r.telephonePortable,r.dateEnregistrement, v.commune FROM recense r INNER JOIN villes v ON r.id = v.id";
+//$sql = "SELECT `id`, `nom`, `prenom`, `nomUsage`, DATE_FORMAT(dateNaissance , '%d/%m/%Y'), `adresseMail`, `telephonePortable`, `idresidence`, `idVilles`, `iddiplome`, DATE_FORMAT(dateEnregistrement, '%d/%m/%Y') FROM `recense` order by id desc";
         $result = $this->getDb()->fetchAll($sql);
 
-        // Convert query result to an array of domain objects
+// Convert query result to an array of domain objects
         $recenses = array();
         foreach ($result as $row) {
             $recenseId = $row['id'];
@@ -34,7 +33,7 @@ class RecenseDAO extends DAO {
     }
 
     public function find($id) {
-        $sql = "select * from recense where id=?";
+        $sql = "SELECT r.id,r.nom,r.prenom,r.nomUsage,r.dateNaissance,r.adresseMail,r.telephonePortable,r.dateEnregistrement, v.commune FROM recense r INNER JOIN villes v ON r.id = v.id WHERE r.id = ?";
         $row = $this->getDb()->fetchAssoc($sql, array($id));
 
         if ($row) {
@@ -53,22 +52,24 @@ class RecenseDAO extends DAO {
             'dateNaissance' => $recense->getDateNaissance(),
             'adresseMail' => $recense->getAdresseMail(),
             'telephonePortable' => $recense->getTelephonePortable(),
+            'dateEnregistrement' => $recense->getDateEnregistrement(),
+            'comunne' => $recense->getCommune(),
         );
 
         if ($recense->getId()) {
-            // The recense has already been saved : update it
+// The recense has already been saved : update it
             $this->getDb()->update('recense', $recenseData, array('id' => $recense->getId()));
         } else {
-            // The recense has never been saved : insert it
+// The recense has never been saved : insert it
             $this->getDb()->insert('recense', $recenseData);
-            // Get the id of the newly created recense and set it on the entity.
+// Get the id of the newly created recense and set it on the entity.
             $id = $this->getDb()->lastInsertId();
             $recense->setId($id);
         }
     }
 
     public function delete($id) {
-        // Delete the recense
+// Delete the recense
         $this->getDb()->delete('recense', array('id' => $id));
     }
 
@@ -87,6 +88,8 @@ class RecenseDAO extends DAO {
         $recense->setDateNaissance($row['dateNaissance']);
         $recense->setAdresseMail($row['adresseMail']);
         $recense->setTelephonePortable($row['telephonePortable']);
+        $recense->setDateEnregistrement($row['dateEnregistrement']);
+        $recense->setCommune($row['commune']);
         return $recense;
     }
 

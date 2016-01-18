@@ -11,7 +11,7 @@ class VillesType extends AbstractType
     {
         $builder
             ->add('inseeVille', 'text')
-            ->add('nom', 'text')
+            ->add('commune', 'text')
             ->add('codePostal', 'text');
     }
 

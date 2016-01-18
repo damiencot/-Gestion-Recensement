@@ -103,6 +103,32 @@
                 </div>
                 <!--   ICI  -->
                 <div class="form-group">
+                    {{ form_label(recenseForm.dateEnregistrement, null, { 'label_attr':  {
+                    'class': 'col-sm-4 control-label'
+                    }}) }}
+                    <div class="col-sm-6">
+                        {{ form_errors(recenseForm.dateEnregistrement) }}
+                        {{ form_widget(recenseForm.dateEnregistrement, { 'attr':  {
+                        'class': 'form-control',
+                        'rows': '8'
+                        }}) }}
+                    </div>
+                </div>
+                <!--   ICI  -->
+                <div class="form-group">
+                    {{ form_label(recenseForm.commune, null, { 'label_attr':  {
+                    'class': 'col-sm-4 control-label'
+                    }}) }}
+                    <div class="col-sm-6">
+                        {{ form_errors(recenseForm.commune) }}
+                        {{ form_widget(recenseForm.commune, { 'attr':  {
+                        'class': 'form-control',
+                        'rows': '8'
+                        }}) }}
+                    </div>
+                </div>
+                <!--   ICI  -->
+                <div class="form-group">
                     <div class="col-sm-offset-4 col-sm-3">
                         <input type="submit" class="btn btn-primary" value="Save" />
                     </div>
