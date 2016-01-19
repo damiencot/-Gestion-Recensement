@@ -37,8 +37,9 @@ class VillesDAO  extends DAO{
         //$sql="SELECT * FROM villes WHERE id =(SELECT id FROM recense WHERE idVilles = ?)";
         //Selection toute les villes qui correspondans aux ID des différents recense.
         //$sql = "SELECT r.id, v.commune FROM recense r INNER JOIN villes v ON r.id = v.id ";
-        $sql ="SELECT recense.id, villes.commune, villes.inseeVille, villes.codePostal FROM recense, villes WHERE recense.id = villes.id ";
-        $row = $this->getDb()->fetchAssoc($sql, array($id));
+        //$sql ="SELECT recense.id, villes.commune, villes.inseeVille, villes.codePostal FROM recense, villes WHERE recense.id = villes.id ";
+        $sql ="SELECT r.id, v.commune, v.inseeVille, v.commune, v.codePostal FROM recense r INNER JOIN villes v ON r.id = v.id WHERE r.id = ?";
+         $row = $this->getDb()->fetchAssoc($sql, array($id));
 
         if ($row) {
             return $this->buildDomainObject($row);
