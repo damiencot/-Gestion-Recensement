@@ -5,6 +5,7 @@ namespace MicroCMS\Controller;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use MicroCMS\Domain\Recense;
+use MicroCMS\Domain\Villes;
 
 class ApiController {
 
@@ -25,6 +26,17 @@ class ApiController {
         // Create and return a JSON response
         return $app->json($responseData);
     }
+    
+     public function getVillesAction(Application $app) {
+        $villes = $app['dao.villes']->findAll();
+        // Convert an array of objects ($recense) into an array of associative arrays ($responseData)
+        $responseData = array();
+        foreach ($villes as $ville) {
+            $responseData[] = $this->buildRecenseArray($ville);
+        }
+        // Create and return a JSON response
+        return $app->json($responseData);
+    }
 
     /**
      * API recense details controller.
@@ -37,6 +49,14 @@ class ApiController {
     public function getRecenseAction($id, Application $app) {
         $recense = $app['dao.recense']->find($id);
         $responseData = $this->buildRecenseArray($recense);
+        // Create and return a JSON response
+        return $app->json($responseData);
+    }
+    
+    
+    public function getVilleAction($id, Application $app) {
+        $ville = $app['dao.villes']->find($id);
+        $responseData = $this->buildRecenseArray($ville);
         // Create and return a JSON response
         return $app->json($responseData);
     }
@@ -104,6 +124,15 @@ class ApiController {
         return $data;
     }
     
+    private function buildVillesArray(Villes $villes){
+        $data = array(
+            'id' => $villes->getId(),
+            'codePostal' => $villes->getCodePostal(),
+            'inseeVille' => $villes->getInseeVille(),
+            'nom' => $villes->getNom()
+        );
+        return $data;
+    }
     
     private function buildResidenceArray(Residence $residence) {
        $date = array (

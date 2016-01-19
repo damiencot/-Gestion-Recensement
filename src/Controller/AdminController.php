@@ -6,8 +6,10 @@ use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use MicroCMS\Domain\User;
 use MicroCMS\Domain\Recense;
+use MicroCMS\Domain\Villes;
 use MicroCMS\Form\Type\RecenseType;
-use MicroCMS\Form\Type\UserType;
+use MicroCMS\Form\Type\VillesType;
+
 
 class AdminController {
 
@@ -19,10 +21,12 @@ class AdminController {
     public function indexAction(Application $app) {
         $recenses = $app['dao.recense']->findAll();
         $users = $app['dao.user']->findAll();
-        return $app['twig']->render('admin.html.twig', array(
-                    'recenses' => $recenses,
-                    'users' => $users));
+        return $app['twig']->render('admin.html.twig', array(       
+            'recenses' => $recenses,
+            'users' => $users));
+
     }
+    
 
     /**
      * Add recense controller.
@@ -66,17 +70,24 @@ class AdminController {
      * @param integer $id Recense id
      * @param Request $request Incoming request
      * @param Application $app Silex application
+     * 
      */
     public function editRecenseAction($id, Request $request, Application $app) {
+        $villes = $app['dao.villes']->find($id);
+        $villesForm = $app['form.factory']->create(new VillesType(), $villes);
+        $villesForm->handleRequest($request);
+        
         $recense = $app['dao.recense']->find($id);
         $recenseForm = $app['form.factory']->create(new RecenseType(), $recense);
         $recenseForm->handleRequest($request);
-        if ($recenseForm->isSubmitted() && $recenseForm->isValid()) {
+        if ($recenseForm->isSubmitted() && $villesForm->isSubmitted() && $recenseForm->isValid()) {
+            $app['dao.villes']->save($villes);
             $app['dao.recense']->save($recense);
             $app['session']->getFlashBag()->add('success', 'The recense was succesfully updated.');
         }
         return $app['twig']->render('recense_form.html.twig', array(
                     'prenom' => 'Edit recensee',
+                    'villesForm' => $villesForm->createView(),
                     'recenseForm' => $recenseForm->createView()));
     }
 

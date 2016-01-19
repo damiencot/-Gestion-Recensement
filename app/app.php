@@ -65,6 +65,10 @@ $app['dao.residence'] = $app->share(function ($app) {
 $app['dao.user'] = $app->share(function ($app) {
     return new MicroCMS\DAO\UserDAO($app['db']);
 });
+
+$app['dao.villes'] = $app->share(function ($app) {
+    return new MicroCMS\DAO\VillesDAO($app['db']);
+});
 /*
 // Register error handler
 $app->error(function (\Exception $e, $code) use ($app) {

@@ -29,6 +29,11 @@ class Recense {
     
     private $telephonePortable;
     
+    private $dateEnregistrement;
+    
+    private $commune;
+    
+    private $diplome;
     
     function getId() {
         return $this->id;
@@ -48,8 +53,17 @@ class Recense {
 
     function getDateNaissance() {
         return $this->dateNaissance;
+        
     }
 
+    /*
+     * 
+     * $date = new DateTime();
+        return $date->format('Y-m-d');
+     */
+    
+    
+    
     function getAdresseMail() {
         return $this->adresseMail;
     }
@@ -86,6 +100,29 @@ class Recense {
         $this->telephonePortable = $telephonePortable;
     }
 
+    function getDateEnregistrement() {
+        return $this->dateEnregistrement;
+    }
 
-    
+    function setDateEnregistrement($dateEnregistrement) {
+        $this->dateEnregistrement = $dateEnregistrement;
+    }
+
+    function getCommune() {
+        return $this->commune;
+    }
+
+    function setCommune($commune) {
+        $this->commune = $commune;
+    }
+
+    function getDiplome() {
+        return $this->diplome;
+    }
+
+    function setDiplome($diplome) {
+        $this->diplome = $diplome;
+    }
+
+
 }
