@@ -15,7 +15,9 @@ class RecenseType extends AbstractType
             ->add('nomUsage', 'text')
             ->add('dateNaissance', 'text')
             ->add('adresseMail', 'email')
-            ->add('telephonePortable', 'text');
+            ->add('telephonePortable', 'text')
+            ->add('dateEnregistrement', 'text');
+            
     }
 
     public function getNom()

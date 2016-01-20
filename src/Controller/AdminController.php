@@ -6,8 +6,12 @@ use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use MicroCMS\Domain\User;
 use MicroCMS\Domain\Recense;
+use MicroCMS\Domain\FilliationParent;
+use MicroCMS\Domain\Residence;
 use MicroCMS\Form\Type\RecenseType;
-use MicroCMS\Form\Type\UserType;
+use MicroCMS\Form\Type\FilliationParentType;
+use MicroCMS\Form\Type\ResidenceType;
+
 
 class AdminController {
 
@@ -19,10 +23,12 @@ class AdminController {
     public function indexAction(Application $app) {
         $recenses = $app['dao.recense']->findAll();
         $users = $app['dao.user']->findAll();
-        return $app['twig']->render('admin.html.twig', array(
-                    'recenses' => $recenses,
-                    'users' => $users));
+        return $app['twig']->render('admin.html.twig', array(       
+            'recenses' => $recenses,
+            'users' => $users));
+
     }
+    
 
     /**
      * Add recense controller.
@@ -66,17 +72,32 @@ class AdminController {
      * @param integer $id Recense id
      * @param Request $request Incoming request
      * @param Application $app Silex application
+     * 
      */
     public function editRecenseAction($id, Request $request, Application $app) {
+        
+        $filliationParent = $app['dao.filliationParent']->find($id);
+        $filliationParentForm = $app['form.factory']->create(new FilliationParentType(), $filliationParent);
+        $filliationParentForm->handleRequest($request);
+        
         $recense = $app['dao.recense']->find($id);
         $recenseForm = $app['form.factory']->create(new RecenseType(), $recense);
         $recenseForm->handleRequest($request);
-        if ($recenseForm->isSubmitted() && $recenseForm->isValid()) {
+        
+        $residence = $app['dao.residence']->find($id);
+        $residenceForm = $app['form.factory']->create(new ResidenceType(), $residence);
+        $residenceForm->handleRequest($request);
+        
+        if ($recenseForm->isSubmitted() && $residenceForm->isSubmitted() && $filliationParentForm->isSubmitted() && $recenseForm->isValid()) {
+            $app['dao.residence']->save($residence);
             $app['dao.recense']->save($recense);
+            $app['dao.filliationParent']->save($filliationParent);
             $app['session']->getFlashBag()->add('success', 'The recense was succesfully updated.');
         }
         return $app['twig']->render('recense_form.html.twig', array(
                     'prenom' => 'Edit recensee',
+                    'filliationParentForm' => $filliationParentForm->createView(),
+                    'residenceForm' => $residenceForm->createView(),
                     'recenseForm' => $recenseForm->createView()));
     }
 

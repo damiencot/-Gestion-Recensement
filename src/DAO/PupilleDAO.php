@@ -9,7 +9,7 @@
 namespace MicroCMS\DAO;
 
 
-use MicroCMS\Domain\Diplome;
+use MicroCMS\Domain\Pupille;
 /**
  * Description of RecenseDAO
  *

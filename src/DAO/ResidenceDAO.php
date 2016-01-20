@@ -8,12 +8,14 @@
 
 namespace MicroCMS\DAO;
 
+use MicroCMS\Domain\Residence;
+
 /**
  * Description of AdresseDAO
  *
  * @author thouars
  */
-class ResidenceDAO {
+class ResidenceDAO extends DAO {
     
     public function findAll() {
         $sql = "select * from residence order by id desc";
@@ -27,20 +29,19 @@ class ResidenceDAO {
         }
         return $residences;
     }
-    
-    
-     public function find($id) {
-        $sql = "select * from residence where id=?";
-        $row = $this->getDb()->fetchAssoc($sql, array($id));
 
+     public function find($id) {
+        //$sql ="select * from residence where id=?";
+        $sql = "SELECT recense.id , residence.adresse, residence.telephone , villes.commune, villes.inseeVille, villes.codePostal FROM recense, residence, villes WHERE recense.id = residence.idrecense AND residence.id = villes.id AND residence.idrecense = ?";
+
+        $row = $this->getDb()->fetchAssoc($sql, array($id));
         if ($row) {
             return $this->buildDomainObject($row);
         } else {
             throw new \Exception("No residence matching id " . $id);
         }
     }
-    
-    
+
     public function save(Residence $residence) {
         $residenceData = array(
             'id' => $residence->getId(),
@@ -76,6 +77,9 @@ class ResidenceDAO {
         $residence->setId($row['id']);
         $residence->setAdresse($row['adresse']);
         $residence->setTelephone($row['telephone']);
+        $residence->setCommune($row['commune']);
+        $residence->setInseeVille($row['inseeVille']);
+        $residence->setCodePostal($row['codePostal']);
         return $residence;
     }
 }
