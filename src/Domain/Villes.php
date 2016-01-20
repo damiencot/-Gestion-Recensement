@@ -8,18 +8,20 @@
 
 namespace MicroCMS\Domain;
 
+
+
 /**
  * Description of Villes
  *
  * @author thouars
  */
-class Villes {
+class Villes{
     
     private $id;
     
     private $inseeVille;
     
-    private $nom;
+    private $commune;
     
     private $codePostal;
     
@@ -31,8 +33,8 @@ class Villes {
         return $this->inseeVille;
     }
 
-    function getNom() {
-        return $this->nom;
+    function getCommune() {
+        return $this->commune;
     }
 
     function getCodePostal() {
@@ -47,13 +49,15 @@ class Villes {
         $this->inseeVille = $inseeVille;
     }
 
-    function setNom($nom) {
-        $this->nom = $nom;
+    function setCommune($commune) {
+        $this->commune = $commune;
     }
 
     function setCodePostal($codePostal) {
         $this->codePostal = $codePostal;
     }
+    
+    
 
 
 

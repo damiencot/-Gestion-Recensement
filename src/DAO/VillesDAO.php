@@ -34,8 +34,12 @@ class VillesDAO  extends DAO{
     
     
      public function find($id) {
-        $sql = "select * from villes where id=?";
-        $row = $this->getDb()->fetchAssoc($sql, array($id));
+        //$sql="SELECT * FROM villes WHERE id =(SELECT id FROM recense WHERE idVilles = ?)";
+        //Selection toute les villes qui correspondans aux ID des différents recense.
+        //$sql = "SELECT r.id, v.commune FROM recense r INNER JOIN villes v ON r.id = v.id ";
+        //$sql ="SELECT recense.id, villes.commune, villes.inseeVille, villes.codePostal FROM recense, villes WHERE recense.id = villes.id ";
+        $sql ="SELECT r.id, v.inseeVille, v.commune, v.codePostal FROM recense r INNER JOIN villes v ON r.id = v.id WHERE r.id = ?";
+         $row = $this->getDb()->fetchAssoc($sql, array($id));
 
         if ($row) {
             return $this->buildDomainObject($row);
@@ -49,7 +53,7 @@ class VillesDAO  extends DAO{
         $villeData = array(
             'id' => $ville->getId(),
             'inseeVille' => $ville->getInseeVille(),
-            'nom' => $ville->getNom(),
+            'commune' => $ville->getCommune(),
             'codePostal' => $ville->getCodePostal(),
             );
 
@@ -70,6 +74,8 @@ class VillesDAO  extends DAO{
         $this->getDb()->delete('ville', array('id' => $id));
     }
 
+    
+    
     /**
      * Creates an Recense object based on a DB row.
      *
@@ -77,11 +83,11 @@ class VillesDAO  extends DAO{
      * @return \MicroCMS\Domain\Recense
      */
     protected function buildDomainObject($row) {
-        $ville = new Ville();
-        $ville->setId($row['id']);
-        $ville->setInseeVille($row['inseeVille']);
-        $ville->setNom($row['nom']);
-        $ville->setCodePostal($row['codePostal']);
-        return $ville;
+        $villes = new Villes();
+        $villes->setId($row['id']);
+        $villes->setInseeVille($row['inseeVille']);
+        $villes->setCommune($row['commune']);
+        $villes->setCodePostal($row['codePostal']);
+        return $villes;
     }
 }

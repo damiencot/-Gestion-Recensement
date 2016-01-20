@@ -8,12 +8,14 @@
 
 namespace MicroCMS\DAO;
 
+use MicroCMS\Domain\Residence;
+
 /**
  * Description of AdresseDAO
  *
  * @author thouars
  */
-class ResidenceDAO {
+class ResidenceDAO extends DAO {
     
     public function findAll() {
         $sql = "select * from residence order by id desc";
@@ -30,9 +32,11 @@ class ResidenceDAO {
     
     
      public function find($id) {
-        $sql = "select * from residence where id=?";
-        $row = $this->getDb()->fetchAssoc($sql, array($id));
+        //$sql ="select * from residence where id=?";
+        $sql = "SELECT recense.id , residence.adresse, residence.telephone , villes.commune, villes.inseeVille, villes.codePostal FROM recense, residence, villes WHERE recense.id = residence.idrecense AND residence.id = villes.id AND residence.idrecense = ?";
 
+        $row = $this->getDb()->fetchAssoc($sql, array($id));
+                var_dump($row);
         if ($row) {
             return $this->buildDomainObject($row);
         } else {

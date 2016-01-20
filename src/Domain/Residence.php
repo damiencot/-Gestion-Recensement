@@ -13,7 +13,7 @@ namespace MicroCMS\Domain;
  *
  * @author thouars
  */
-class Residence {
+class Residence extends Villes{
     
     private $id;
     
@@ -21,6 +21,15 @@ class Residence {
     
     private $telephone;
     
+    protected $commune;
+    
+    
+    
+    function getCommune() {
+        $retour = parent::getCommune();
+    
+        echo $retour;
+    }
     
     function getId() {
         return $this->id;

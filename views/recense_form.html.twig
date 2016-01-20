@@ -12,9 +12,6 @@
     {% endfor %}
 
 
-
-
-
     <div id="Tab1" class="container">	
         <ul  class="nav nav-pills nav-justified ">
             <li class="active"><a  href="#etatcivil" data-toggle="tab">Etat Civil</a></li>
@@ -103,21 +100,38 @@
                 </div>
                 <!--   ICI  -->
                 <div class="form-group">
+                    {{ form_label(recenseForm.dateEnregistrement, null, { 'label_attr':  {
+                    'class': 'col-sm-4 control-label'
+                    }}) }}
+                    <div class="col-sm-6">
+                        {{ form_errors(recenseForm.dateEnregistrement) }}
+                        {{ form_widget(recenseForm.dateEnregistrement, { 'attr':  {
+                        'class': 'form-control',
+                        'rows': '8'
+                        }}) }}
+                    </div>
+                </div>
+             
+                <!--   ICI  -->
+                <div class="form-group">
                     <div class="col-sm-offset-4 col-sm-3">
                         <input type="submit" class="btn btn-primary" value="Save" />
                     </div>
                 </div>
                 {{ form_end(recenseForm) }}
             </div>
+            
+             <!-- ICI -->
+            
             <div class="tab-pane" id="adresse">
-                {{ form_start(recenseForm, { 'attr': {'class': 'form-horizontal'} }) }}
+                 {{ form_start(residenceForm, { 'attr': {'class': 'form-horizontal'} }) }}
                 <div class="form-group">
-                    {{ form_label(recenseForm.telephonePortable, null, { 'label_attr':  {
+                    {{ form_label(residenceForm.commune, null, { 'label_attr':  {
                     'class': 'col-sm-4 control-label'
                     }}) }}
                     <div class="col-sm-6">
-                        {{ form_errors(recenseForm.telephonePortable) }}
-                        {{ form_widget(recenseForm.telephonePortable, { 'attr':  {
+                        {{ form_errors(residenceForm.commune) }}
+                        {{ form_widget(residenceForm.commune, { 'attr':  {
                         'class': 'form-control',
                         'rows': '8'
                         }}) }}
@@ -125,63 +139,68 @@
                 </div>
                 <!--   ICI  -->
                 <div class="form-group">
-                    {{ form_label(recenseForm.telephonePortable, null, { 'label_attr':  {
+                    {{ form_label(residenceForm.inseeVille, null, { 'label_attr':  {
                     'class': 'col-sm-4 control-label'
                     }}) }}
                     <div class="col-sm-6">
-                        {{ form_errors(recenseForm.telephonePortable) }}
-                        {{ form_widget(recenseForm.telephonePortable, { 'attr':  {
+                        {{ form_errors(residenceForm.inseeVille) }}
+                        {{ form_widget(residenceForm.inseeVille, { 'attr':  {
                         'class': 'form-control',
                         'rows': '8'
                         }}) }}
                     </div>
                 </div>
                 <!--   ICI  -->
+                <div class="form-group">
+                    {{ form_label(residenceForm.codePostal, null, { 'label_attr':  {
+                    'class': 'col-sm-4 control-label'
+                    }}) }}
+                    <div class="col-sm-6">
+                        {{ form_errors(residenceForm.codePostal) }}
+                        {{ form_widget(residenceForm.codePostal, { 'attr':  {
+                        'class': 'form-control',
+                        'rows': '8'
+                        }}) }}
+                    </div>
+                </div>
+                     <!--   ICI  -->
+                <div class="form-group">
+                    {{ form_label(residenceForm.adresse, null, { 'label_attr':  {
+                    'class': 'col-sm-4 control-label'
+                    }}) }}
+                    <div class="col-sm-6">
+                        {{ form_errors(residenceForm.adresse) }}
+                        {{ form_widget(residenceForm.adresse, { 'attr':  {
+                        'class': 'form-control',
+                        'rows': '8'
+                        }}) }}
+                    </div>
+                </div>
+                     <!--   ICI  -->
+                <div class="form-group">
+                    {{ form_label(residenceForm.telephone, null, { 'label_attr':  {
+                    'class': 'col-sm-4 control-label'
+                    }}) }}
+                    <div class="col-sm-6">
+                        {{ form_errors(residenceForm.telephone) }}
+                        {{ form_widget(residenceForm.telephone, { 'attr':  {
+                        'class': 'form-control',
+                        'rows': '8'
+                        }}) }}
+                    </div>
+                </div>
                 <div class="form-group">
                     <div class="col-sm-offset-4 col-sm-3">
                         <input type="submit" class="btn btn-primary" value="Save" />
                     </div>
                 </div>
-                {{ form_end(recenseForm) }}
+                {{ form_end(residenceForm) }}
             </div>
             <!-- ICI -->
-            <div class="tab-pane" id="filiation">
-                {{ form_start(recenseForm, { 'attr': {'class': 'form-horizontal'} }) }}
-                <div class="form-group">
-                    {{ form_label(recenseForm.nom, null, { 'label_attr':  {
-                    'class': 'col-sm-4 control-label'
-                    }}) }}
-                    <div class="col-sm-6">
-                        {{ form_errors(recenseForm.nom) }}
-                        {{ form_widget(recenseForm.nom, { 'attr':  {
-                        'class': 'form-control',
-                        'rows': '8'
-                        }}) }}
-                    </div>
-                </div>
-                <!--   ICI  -->
-                <div class="form-group">
-                    {{ form_label(recenseForm.prenom, null, { 'label_attr':  {
-                    'class': 'col-sm-4 control-label'
-                    }}) }}
-                    <div class="col-sm-6">
-                        {{ form_errors(recenseForm.prenom) }}
-                        {{ form_widget(recenseForm.prenom, { 'attr':  {
-                        'class': 'form-control',
-                        'rows': '8'
-                        }}) }}
-                    </div>
-                </div>
-                <!--   ICI  -->
-                <div class="form-group">
-                    <div class="col-sm-offset-4 col-sm-3">
-                        <input type="submit" class="btn btn-primary" value="Save" />
-                    </div>
-                </div>
-                {{ form_end(recenseForm) }}
-            </div>
+            
         </div>
     </div>
+            
 
 
     <!-- Bootstrap core JavaScript -->

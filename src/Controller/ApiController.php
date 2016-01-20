@@ -5,6 +5,8 @@ namespace MicroCMS\Controller;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use MicroCMS\Domain\Recense;
+use MicroCMS\Domain\Villes;
+use MicroCMS\Domain\Residence;
 
 class ApiController {
 
@@ -25,6 +27,28 @@ class ApiController {
         // Create and return a JSON response
         return $app->json($responseData);
     }
+    
+     public function getVillesAction(Application $app) {
+        $villes = $app['dao.villes']->findAll();
+        // Convert an array of objects ($recense) into an array of associative arrays ($responseData)
+        $responseData = array();
+        foreach ($villes as $ville) {
+            $responseData[] = $this->buildRecenseArray($ville);
+        }
+        // Create and return a JSON response
+        return $app->json($responseData);
+    }
+    
+    
+    public function getResidencesAction(Application $app) {
+        $residences = $app['dao.residence']->findAll();
+        $reponseData = array();
+        foreach ($residences as $residence) {
+            $reponseData[] = $this->buildResidenceArray($residence);
+        }
+        
+        return $app->json($reponseData);
+    }
 
     /**
      * API recense details controller.
@@ -39,6 +63,22 @@ class ApiController {
         $responseData = $this->buildRecenseArray($recense);
         // Create and return a JSON response
         return $app->json($responseData);
+    }
+    
+    
+    public function getVilleAction($id, Application $app) {
+        $ville = $app['dao.villes']->find($id);
+        $responseData = $this->buildRecenseArray($ville);
+        // Create and return a JSON response
+        return $app->json($responseData);
+    }
+    
+    
+    public function getResidenceAction($id, Application $app)    {
+        $residence = $app['dao.residence']->find($id);
+        $reponseData = $this->buildResidenceArray($residence);
+        
+        return $app->json($reponseData);
     }
 
     /**
@@ -104,14 +144,23 @@ class ApiController {
         return $data;
     }
     
+    private function buildVillesArray(Villes $villes){
+        $data = array(
+            'id' => $villes->getId(),
+            'codePostal' => $villes->getCodePostal(),
+            'inseeVille' => $villes->getInseeVille(),
+            'nom' => $villes->getNom()
+        );
+        return $data;
+    }
     
     private function buildResidenceArray(Residence $residence) {
-       $date = array (
+       $data = array (
            'id' => $residence->getId(),
            'adresse' => $residence->getAdresse(),
            'telephone' => $residence->getTelephone()
        );
-       return $date;
+       return $data;
     }
     
   

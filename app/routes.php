@@ -9,10 +9,6 @@ $app->get('/admin/', "MicroCMS\Controller\AdminController::indexAction");
 // Detailed info about an recense
 $app->match('/recense/{id}', "MicroCMS\Controller\HomeController::recenseAction");
 
-
-
-//Redirection Menu Onglet Residence_Form.html.twig
-
 // Edit an existing recense
 $app->match('/admin/residence/{id}/edit', "MicroCMS\Controller\AdminController::editResidenceAction");
 
@@ -50,8 +46,6 @@ $app->post('/api/recense', "MicroCMS\Controller\ApiController::addRecenseAction"
 // API : remove an recense
 $app->delete('/api/recense/{id}', "MicroCMS\Controller\ApiController::deleteRecenseAction");
 
-
-
 // API : get all residence
 $app->get('/api/recenses', "MicroCMS\Controller\ApiController::getResidencesAction");
 
@@ -60,8 +54,3 @@ $app->get('/api/recense/{id}', "MicroCMS\Controller\ApiController::getResidences
 
 // API : create an residence
 $app->post('/api/recense', "MicroCMS\Controller\ApiController::addResidencesAction");
-
-
-
-
-
