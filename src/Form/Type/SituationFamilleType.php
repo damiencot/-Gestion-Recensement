@@ -10,7 +10,7 @@ namespace MicroCMS\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+
 
 /**
  * Description of SituationFamillialeType
@@ -22,17 +22,13 @@ class SituationFamilleType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
                 ->add('soeurEtFrere', 'text')
-                ->add('enfant', 'text');
+                ->add('enfantACharge', 'text');
     }
 
     public function getName() {
         return 'situationFamille';
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver) {
-        $resolver->setDefaults(array(
-            'data' => 'namespace MicroCMS\Domain\SituationFamille',
-        ));
-    }
+
 
 }

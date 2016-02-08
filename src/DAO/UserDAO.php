@@ -8,8 +8,8 @@ use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use MicroCMS\Domain\User;
 
-class UserDAO extends DAO implements UserProviderInterface
-{
+class UserDAO extends DAO implements UserProviderInterface {
+
     /**
      * Returns a list of all users, sorted by role and name.
      *
@@ -39,10 +39,11 @@ class UserDAO extends DAO implements UserProviderInterface
         $sql = "select * from t_user where usr_id=?";
         $row = $this->getDb()->fetchAssoc($sql, array($id));
 
-        if ($row)
+        if ($row) {
             return $this->buildDomainObject($row);
-        else
-            throw new \Exception("No user matching id " . $id);
+        } else {
+            throw new \Exception("Aucun utilisateur trouver " . $id);
+        }
     }
 
     /**
@@ -56,7 +57,7 @@ class UserDAO extends DAO implements UserProviderInterface
             'usr_salt' => $user->getSalt(),
             'usr_password' => $user->getPassword(),
             'usr_role' => $user->getRole()
-            );
+        );
 
         if ($user->getId()) {
             // The user has already been saved : update it
@@ -83,22 +84,21 @@ class UserDAO extends DAO implements UserProviderInterface
     /**
      * {@inheritDoc}
      */
-    public function loadUserByUsername($username)
-    {
+    public function loadUserByUsername($username) {
         $sql = "select * from t_user where usr_name=?";
         $row = $this->getDb()->fetchAssoc($sql, array($username));
 
-        if ($row)
+        if ($row) {
             return $this->buildDomainObject($row);
-        else
+        } else {
             throw new UsernameNotFoundException(sprintf('User "%s" not found.', $username));
+        }
     }
 
     /**
      * {@inheritDoc}
      */
-    public function refreshUser(UserInterface $user)
-    {
+    public function refreshUser(UserInterface $user) {
         $class = get_class($user);
         if (!$this->supportsClass($class)) {
             throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', $class));
@@ -109,8 +109,7 @@ class UserDAO extends DAO implements UserProviderInterface
     /**
      * {@inheritDoc}
      */
-    public function supportsClass($class)
-    {
+    public function supportsClass($class) {
         return 'MicroCMS\Domain\User' === $class;
     }
 
@@ -129,4 +128,5 @@ class UserDAO extends DAO implements UserProviderInterface
         $user->setRole($row['usr_role']);
         return $user;
     }
+
 }

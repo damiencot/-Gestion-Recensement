@@ -48,12 +48,12 @@ class DiplomeDAO  extends DAO{
     public function save(Diplome $diplome) {
         $diplomeData = array(
             'id' => $diplome->getId(),
-            'nature' => $diplome->getNom(),
+            'diplome' => $diplome->getDiplome(),
             );
 
         if ($diplome->getId()) {
             // The recense has already been saved : update it
-            $this->getDb()->update('diplome', $diplomeData, array('id' => $recense->getId()));
+            $this->getDb()->update('diplome', $diplomeData, array('id' => $diplome->getId()));
         } else {
             // The recense has never been saved : insert it
             $this->getDb()->insert('diplome', $diplomeData);
@@ -77,7 +77,7 @@ class DiplomeDAO  extends DAO{
     protected function buildDomainObject($row) {
         $diplome = new Diplome();
         $diplome->setId($row['id']);
-        $diplome->setNature($row['nature']);
+        $diplome->setDiplome($row['diplome']);
         return $diplome;
     }
 }

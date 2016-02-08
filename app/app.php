@@ -3,6 +3,7 @@ use Symfony\Component\Debug\ErrorHandler;
 use Symfony\Component\Debug\ExceptionHandler;
 use Symfony\Component\HttpFoundation\Request;
 
+
 // Register global error and exception handlers
 ErrorHandler::register();
 ExceptionHandler::register();
@@ -78,18 +79,38 @@ $app['dao.nationalites'] = $app->share(function ($app) {
     return new MicroCMS\DAO\NationalitesDAO($app['db']);
 });
 
+$app['dao.situationFamille'] = $app->share(function ($app) {
+    return new MicroCMS\DAO\SituationFamilleDAO($app['db']);
+});
+
+
+$app['dao.situationMatrimonial'] = $app->share(function ($app) {
+    return new MicroCMS\DAO\SituationMatrimonialDAO($app['db']);
+});
+
+
+$app['dao.situationScolaire'] = $app->share(function ($app) {
+    return new MicroCMS\DAO\SituationScolaireDAO($app['db']);
+});
+
+
+$app['dao.profession'] = $app->share(function ($app) {
+    return new MicroCMS\DAO\ProfessionDAO($app['db']);
+});
+
+
 /*
 // Register error handler
 $app->error(function (\Exception $e, $code) use ($app) {
     switch ($code) {
         case 403:
-            $message = 'Access denied.';
+            $message = 'Access refusé.';
             break;
         case 404:
-            $message = 'The requested resource could not be found.';
+            $message = 'La requete ne peut etre trouvé.';
             break;
         default:
-            $message = "Something went wrong.";
+            $message = "Quelque chose ne va pas.";
     }
     return $app['twig']->render('error.html.twig', array('message' => $message));
 });

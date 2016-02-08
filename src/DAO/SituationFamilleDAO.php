@@ -24,15 +24,14 @@ class SituationFamilleDAO extends DAO {
         $familles = array();
         foreach ($result as $row) {
             $familleId = $row['id'];
-            $familles[$familleId] = $this->buildDomaineObject($row);
+            $familles[$familleId] = $this->buildDomainObject($row);
         }
         return $familles;
     }
 
     public function find($id) {
-        $sql = "SELECT r.id, famille.id, famille.soeurEtFrere, famille.enfantACharge FROM situationfamilliale AS famille, recense AS r WHERE r.id = famille.idrecense  AND r.id = ?";
+        $sql = "SELECT r.id, famille.id, famille.soeurEtFrere, famille.enfantACharge FROM situationfamilliale AS famille, recense AS r WHERE r.idSituationFamille = famille.idrecense AND r.id = ?";
         $row = $this->getDb()->fetchAssoc($sql, array($id));
-
         if ($row) {
             return $this->buildDomainObject($row);
         } else {
@@ -44,9 +43,9 @@ class SituationFamilleDAO extends DAO {
         $familleData = array(
             'id' => $situationFamilliale->getId(),
             'soeurEtFrere' => $situationFamilliale->getSoeurEtFrere(),
-            'enfant' => $situationFamilliale->getSoeurEtFrere(),
+            'enfantACharge' => $situationFamilliale->getEnfantACharge(),
         );
-
+        var_dump($familleData);
         if ($situationFamilliale->getId()) {
             $this->getDb()->update('situationfamilliale', $familleData, array('id' => $situationFamilliale->getId()));
         } else {
@@ -64,7 +63,7 @@ class SituationFamilleDAO extends DAO {
         $famille = new SituationFamille();
         $famille->setId($row['id']);
         $famille->setSoeurEtFrere($row['soeurEtFrere']);
-        $famille->setEnfant($row['enfantACharge']);
+        $famille->setEnfantACharge($row['enfantACharge']);
         return $famille;
     }
 

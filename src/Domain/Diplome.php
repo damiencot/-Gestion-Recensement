@@ -18,24 +18,23 @@ class Diplome {
     
     private $id;
     
-    private $nom;
-    
+    private $diplome;
     
     
     function getId() {
         return $this->id;
     }
 
-    function getNom() {
-        return $this->nom;
+    function getDiplome() {
+        return $this->diplome;
     }
 
     function setId($id) {
         $this->id = $id;
     }
 
-    function setNom($nom) {
-        $this->nom = $nom;
+    function setDiplome($diplome) {
+        $this->diplome = $diplome;
     }
 
 

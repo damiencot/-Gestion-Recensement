@@ -13,28 +13,27 @@ namespace MicroCMS\Domain;
  *
  * @author thouars
  */
-class Recense {
-    
+class Recense extends Villes {
+
     private $id;
-   
     private $nom;
-    
     private $prenom;
-            
     private $nomUsage;
-    
     private $dateNaissance;
-    
     private $adresseMail;
-    
     private $telephonePortable;
-    
     private $dateEnregistrement;
     
-    private $commune;
-    
-    private $diplome;
-    
+    private $dateEnregistrementPresent = 'NOW()';
+
+    function getCommune() {
+        return parent::getCommune();
+    }
+
+    function setCommune($commune) {
+        parent::setCommune($commune);
+    }
+
     function getId() {
         return $this->id;
     }
@@ -53,17 +52,8 @@ class Recense {
 
     function getDateNaissance() {
         return $this->dateNaissance;
-        
     }
 
-    /*
-     * 
-     * $date = new DateTime();
-        return $date->format('Y-m-d');
-     */
-    
-    
-    
     function getAdresseMail() {
         return $this->adresseMail;
     }
@@ -101,28 +91,29 @@ class Recense {
     }
 
     function getDateEnregistrement() {
-        return $this->dateEnregistrement;
+    /*
+        list($annee, $mois, $jour) = explode("-", $this->dateEnregistrement);
+        $dateFR = $jour . '/' . $mois . '/' . $annee;
+
+        return $dateFR;
+     */
+        
+ 
+     return $this->dateEnregistrement;
+
     }
 
     function setDateEnregistrement($dateEnregistrement) {
         $this->dateEnregistrement = $dateEnregistrement;
     }
-
-    function getCommune() {
-        return $this->commune;
+    
+    
+    function getDateEnregistrementPresent(){
+       
+        
+         return $this->dateEnregistrementPresent;
     }
 
-    function setCommune($commune) {
-        $this->commune = $commune;
-    }
-
-    function getDiplome() {
-        return $this->diplome;
-    }
-
-    function setDiplome($diplome) {
-        $this->diplome = $diplome;
-    }
-
+    
 
 }

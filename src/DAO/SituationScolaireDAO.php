@@ -1,6 +1,6 @@
 <?php
 
-/* 
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -31,7 +31,7 @@ class SituationScolaireDAO extends DAO {
     }
 
     public function find($id) {
-        $sql = "SELECT recense.id, situationscolaire.etude, situationscolaire.specialites, diplome.diplome FROM recense, situationscolaire, diplome WHERE situationscolaire.id = recense.id AND recense.iddiplome = diplome.id AND recense.id = ?";
+        $sql = "SELECT recense.id, situationscolaire.etude, situationscolaire.specialites, diplome.diplome FROM recense, situationscolaire, diplome WHERE situationscolaire.id = recense.idSituationScolaire AND recense.iddiplome = diplome.id AND recense.id = ?";
         //$sql = "SELECT recense.id, situationscolaire.etude, situationscolaire.specialites, diplome.diplome FROM recense, situationscolaire, diplome WHERE recense.idSituationScolaire = situationscolaire.id AND recense.iddiplome = diplome.id AND recense.id = ?";
         $row = $this->getDb()->fetchAssoc($sql, array($id));
         if ($row) {
@@ -41,11 +41,12 @@ class SituationScolaireDAO extends DAO {
         }
     }
 
-    public function save(situationscolaire $situationscolaire) {
+    public function save(SituationScolaire $situationscolaire) {
         $situationscolaireData = array(
             'id' => $situationscolaire->getId(),
             'etude' => $situationscolaire->getEtude(),
-            'specialites' => $situationscolaire->getSpecialite(),);
+            'specialites' => $situationscolaire->getSpecialites()
+        );
 
         if ($situationscolaire->getId()) {
             // The recense has already been saved : update it
@@ -80,4 +81,3 @@ class SituationScolaireDAO extends DAO {
     }
 
 }
-

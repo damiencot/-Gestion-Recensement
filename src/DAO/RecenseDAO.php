@@ -17,7 +17,6 @@ use MicroCMS\Domain\Recense;
  */
 class RecenseDAO extends DAO {
 
-
     public function findAll() {
         $sql = "SELECT r.id,r.nom,r.prenom,r.nomUsage,r.dateNaissance,r.adresseMail,r.telephonePortable,r.dateEnregistrement, v.commune FROM recense r INNER JOIN villes v ON r.id = v.id";
 //$sql = "SELECT `id`, `nom`, `prenom`, `nomUsage`, DATE_FORMAT(dateNaissance , '%d/%m/%Y'), `adresseMail`, `telephonePortable`, `idresidence`, `idVilles`, `iddiplome`, DATE_FORMAT(dateEnregistrement, '%d/%m/%Y') FROM `recense` order by id desc";
@@ -35,7 +34,7 @@ class RecenseDAO extends DAO {
     public function find($id) {
         //$sql = "SELECT r.id,r.nom,r.prenom,r.nomUsage,r.dateNaissance,r.adresseMail,r.telephonePortable,r.dateEnregistrement, v.commune, re.adresse, d.nom FROM recense r INNER JOIN villes v ON r.id = v.id INNER JOIN residence re ON r.id = re.id INNER JOIN diplome d ON r.id = d.id WHERE r.id = ?";
         // Requete ci-dessus permet de selectionner aussi le champ diplome 
-        $sql = "SELECT r.id,r.nom,r.prenom,r.nomUsage,r.dateNaissance,r.adresseMail,r.telephonePortable,r.dateEnregistrement FROM recense AS r , villes AS v WHERE r.id = ?";
+        $sql = "SELECT r.id,r.nom,r.prenom,r.nomUsage,r.dateNaissance,r.adresseMail,r.telephonePortable,r.dateEnregistrement FROM recense AS r WHERE r.id = ?";
         $row = $this->getDb()->fetchAssoc($sql, array($id));
 
         if ($row) {
@@ -54,8 +53,10 @@ class RecenseDAO extends DAO {
             'dateNaissance' => $recense->getDateNaissance(),
             'adresseMail' => $recense->getAdresseMail(),
             'telephonePortable' => $recense->getTelephonePortable(),
+            'dateEnregistrement' => $recense->getDateEnregistrementPresent(),
         );
-
+        
+        var_dump($recenseData);
         if ($recense->getId()) {
 // The recense has already been saved : update it
             $this->getDb()->update('recense', $recenseData, array('id' => $recense->getId()));
@@ -69,7 +70,7 @@ class RecenseDAO extends DAO {
     }
 
     public function delete($id) {
-// Delete the recense
+        // Delete the recense
         $this->getDb()->delete('recense', array('id' => $id));
     }
 
@@ -92,9 +93,8 @@ class RecenseDAO extends DAO {
         $recense->setCommune($row['commune']);
         return $recense;
     }
-    
-    
-       protected function buildDomainObject($row) {
+
+    protected function buildDomainObject($row) {
         $recense = new Recense();
         $recense->setId($row['id']);
         $recense->setNom($row['nom']);
@@ -104,6 +104,8 @@ class RecenseDAO extends DAO {
         $recense->setAdresseMail($row['adresseMail']);
         $recense->setTelephonePortable($row['telephonePortable']);
         $recense->setDateEnregistrement($row['dateEnregistrement']);
+
+
         return $recense;
     }
 

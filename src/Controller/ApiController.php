@@ -27,8 +27,8 @@ class ApiController {
         // Create and return a JSON response
         return $app->json($responseData);
     }
-    
-     public function getVillesAction(Application $app) {
+
+    public function getVillesAction(Application $app) {
         $villes = $app['dao.villes']->findAll();
         // Convert an array of objects ($recense) into an array of associative arrays ($responseData)
         $responseData = array();
@@ -38,21 +38,20 @@ class ApiController {
         // Create and return a JSON response
         return $app->json($responseData);
     }
-    
-    
+
     public function getResidencesAction(Application $app) {
         $residences = $app['dao.residence']->findAll();
         $reponseData = array();
         foreach ($residences as $residence) {
             $reponseData[] = $this->buildResidenceArray($residence);
         }
-        
+
         return $app->json($reponseData);
     }
 
     /**
      * API recense details controller.
-     *
+     *  
      * @param integer $id Recense id
      * @param Application $app Silex application
      *
@@ -64,20 +63,18 @@ class ApiController {
         // Create and return a JSON response
         return $app->json($responseData);
     }
-    
-    
+
     public function getVilleAction($id, Application $app) {
         $ville = $app['dao.villes']->find($id);
         $responseData = $this->buildRecenseArray($ville);
         // Create and return a JSON response
         return $app->json($responseData);
     }
-    
-    
-    public function getResidenceAction($id, Application $app)    {
+
+    public function getResidenceAction($id, Application $app) {
         $residence = $app['dao.residence']->find($id);
         $reponseData = $this->buildResidenceArray($residence);
-        
+
         return $app->json($reponseData);
     }
 
@@ -105,6 +102,7 @@ class ApiController {
         $recense->setDateNaissance($request->request->get('dateNaissance'));
         $recense->setAdresseMail($request->request->get('adresseMail'));
         $recense->setTelephonePortable($request->request->get('telephonePortable'));
+        $recense->setDateEnregistrement($request->request - get('dateEnregistrement'));
         $app['dao.recense']->save($recense);
         $responseData = $this->buildRecenseArray($recense);
         return $app->json($responseData, 201);  // 201 = Created
@@ -121,8 +119,7 @@ class ApiController {
         $app['dao.recense']->delete($id);
         return $app->json('No Content', 204);  // 204 = No content
     }
-    
-    
+
     /**
      * Converts an Recense object into an associative array for JSON encoding
      *
@@ -131,7 +128,7 @@ class ApiController {
      * @return array Associative array whose fields are the recense properties.
      */
     private function buildRecenseArray(Recense $recense) {
-        $data  = array(
+        $data = array(
             'id' => $recense->getId(),
             'nom' => $recense->getNom(),
             'prenom' => $recense->getPrenom(),
@@ -139,12 +136,11 @@ class ApiController {
             'dateNaissance' => $recense->getDateNaissance(),
             'adresseMail' => $recense->getAdresseMail(),
             'telephonePortable' => $recense->getTelephonePortable()
-                            
-            );
+        );
         return $data;
     }
-    
-    private function buildVillesArray(Villes $villes){
+
+    private function buildVillesArray(Villes $villes) {
         $data = array(
             'id' => $villes->getId(),
             'codePostal' => $villes->getCodePostal(),
@@ -153,15 +149,14 @@ class ApiController {
         );
         return $data;
     }
-    
+
     private function buildResidenceArray(Residence $residence) {
-       $data = array (
-           'id' => $residence->getId(),
-           'adresse' => $residence->getAdresse(),
-           'telephone' => $residence->getTelephone()
-       );
-       return $data;
+        $data = array(
+            'id' => $residence->getId(),
+            'adresse' => $residence->getAdresse(),
+            'telephone' => $residence->getTelephone()
+        );
+        return $data;
     }
-    
-  
+
 }

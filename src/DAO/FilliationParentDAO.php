@@ -34,8 +34,7 @@ class FilliationParentDAO extends DAO {
     }
 
     public function findFather($id) {
-        $sql = "SELECT recense.id, filliationParents.nom, filliationParents.prenom, filliationParents.dateNaissance, filliationParents.sexe, filliationParents.idNationalites , nationalites.pays FROM recense, filliationParents, nationalites WHERE recense.id = filliationParents.idrecense AND filliationParents.idNationalites = nationalites.id AND filliationParents.sexe = 1 AND idrecense = ?";
-        //$sql = "SELECT recense.id, filliationParents.nom, filliationParents.prenom, filliationParents.dateNaissance, filliationParents.sexe, filliationParents.idNationalites , nationalites.pays FROM recense, filliationParents, nationalites WHERE recense.id = filliationParents.id AND filliationParents.idNationalites = nationalites.id AND filliationParents.sexe = 1 AND idrecense = ?";
+        $sql = "SELECT recense.id, filliationParents.nom, filliationParents.prenom, filliationParents.dateNaissance, filliationParents.sexe, filliationParents.idNationalites , nationalites.pays FROM recense, filliationParents, nationalites WHERE recense.idFamille = filliationParents.idfamille AND filliationParents.idNationalites = nationalites.id AND filliationParents.sexe = 1 AND recense.id = ?";
         $row = $this->getDb()->fetchAssoc($sql, array($id));
         if ($row) {
             return $this->buildDomainObject($row);
@@ -45,7 +44,7 @@ class FilliationParentDAO extends DAO {
     }
 
     public function findMother($id) {
-        $sql = "SELECT recense.id, filliationParents.nom, filliationParents.prenom, filliationParents.dateNaissance, filliationParents.sexe, filliationParents.idNationalites , nationalites.pays FROM recense, filliationParents, nationalites WHERE recense.id = filliationParents.idrecense AND filliationParents.idNationalites = nationalites.id AND filliationParents.sexe = 0 AND idrecense = ?";
+        $sql = "SELECT recense.id, filliationParents.nom, filliationParents.prenom, filliationParents.dateNaissance, filliationParents.sexe, filliationParents.idNationalites , nationalites.pays FROM recense, filliationParents, nationalites WHERE recense.idFamille = filliationParents.idfamille AND filliationParents.idNationalites = nationalites.id AND filliationParents.sexe = 0 AND recense.id = ?";
         $row = $this->getDb()->fetchAssoc($sql, array($id));
         if ($row) {
             return $this->buildDomainObject($row);
@@ -62,7 +61,7 @@ class FilliationParentDAO extends DAO {
             'dateNaissance' => $filliationParents->getDateNaissance(),
             'sexe' => $filliationParents->getSexe(),
         );
-
+        var_dump($filliationParentsData);
         if ($filliationParents->getId()) {
             // The recense has already been saved : update it
             $this->getDb()->update('filliationParents', $filliationParentsData, array('id' => $filliationParents->getId()));

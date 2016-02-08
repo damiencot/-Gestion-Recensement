@@ -24,10 +24,11 @@ class ResidenceType extends AbstractType {
         $builder
                 ->add('adresse', 'text')
                 ->add('telephone', 'text')
-                ->add('commune', 'text')
                 ->add('inseeVille', 'text')
+                ->add('commune', 'text')
                 ->add('codePostal', 'text');
-                
+        
+     
       
     }
 

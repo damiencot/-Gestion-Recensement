@@ -19,7 +19,7 @@ class SituationFamille {
     
     private $soeurEtFrere;
 
-    private $enfant;
+    private $enfantACharge;
 
     function getId() {
         return $this->id;
@@ -29,8 +29,8 @@ class SituationFamille {
         return $this->soeurEtFrere;
     }
 
-    function getEnfant() {
-        return $this->enfant;
+    function getEnfantACharge() {
+        return $this->enfantACharge;
     }
 
     function setId($id) {
@@ -41,8 +41,8 @@ class SituationFamille {
         $this->soeurEtFrere = $soeurEtFrere;
     }
 
-    function setEnfant($enfant) {
-        $this->enfant = $enfant;
+    function setEnfantACharge($enfantACharge) {
+        $this->enfantACharge = $enfantACharge;
     }
 
 

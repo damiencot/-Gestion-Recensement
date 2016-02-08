@@ -8,18 +8,19 @@
 
 namespace MicroCMS\DAO;
 
-
 use MicroCMS\Domain\Villes;
+
 /**
  * Description of RecenseDAO
  *
  * @author thouars
  */
-class VillesDAO  extends DAO{
+class VillesDAO extends DAO {
+
     //put your code here
-    
-    
-      public function findAll() {
+
+
+    public function findAll() {
         $sql = "select * from villes order by id desc";
         $result = $this->getDb()->fetchAll($sql);
 
@@ -31,15 +32,14 @@ class VillesDAO  extends DAO{
         }
         return $villes;
     }
-    
-    
-     public function find($id) {
+
+    public function find($id) {
         //$sql="SELECT * FROM villes WHERE id =(SELECT id FROM recense WHERE idVilles = ?)";
         //Selection toute les villes qui correspondans aux ID des différents recense.
         //$sql = "SELECT r.id, v.commune FROM recense r INNER JOIN villes v ON r.id = v.id ";
         //$sql ="SELECT recense.id, villes.commune, villes.inseeVille, villes.codePostal FROM recense, villes WHERE recense.id = villes.id ";
-        $sql ="SELECT r.id, v.inseeVille, v.commune, v.codePostal FROM recense r INNER JOIN villes v ON r.id = v.id WHERE r.id = ?";
-         $row = $this->getDb()->fetchAssoc($sql, array($id));
+        $sql = "SELECT r.id, v.id, v.inseeVille, v.commune, v.codePostal FROM recense r INNER JOIN villes v ON r.id = v.id WHERE r.id = ?";
+        $row = $this->getDb()->fetchAssoc($sql, array($id));
 
         if ($row) {
             return $this->buildDomainObject($row);
@@ -47,15 +47,14 @@ class VillesDAO  extends DAO{
             throw new \Exception("No villes matching id " . $id);
         }
     }
-    
-    
+
     public function save(Villes $ville) {
         $villeData = array(
             'id' => $ville->getId(),
             'inseeVille' => $ville->getInseeVille(),
             'commune' => $ville->getCommune(),
             'codePostal' => $ville->getCodePostal(),
-            );
+        );
 
         if ($ville->getId()) {
             // The recense has already been saved : update it
@@ -68,14 +67,12 @@ class VillesDAO  extends DAO{
             $ville->setId($id);
         }
     }
-    
-     public function delete($id) {
+
+    public function delete($id) {
         // Delete the recense
         $this->getDb()->delete('ville', array('id' => $id));
     }
 
-    
-    
     /**
      * Creates an Recense object based on a DB row.
      *
@@ -90,4 +87,5 @@ class VillesDAO  extends DAO{
         $villes->setCodePostal($row['codePostal']);
         return $villes;
     }
+
 }

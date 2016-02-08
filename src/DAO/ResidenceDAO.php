@@ -17,10 +17,13 @@ use MicroCMS\Domain\Residence;
  */
 class ResidenceDAO extends DAO {
     
+    
+    private $idvilles;
+    
     public function findAll() {
         $sql = "select * from residence order by id desc";
         $result = $this->getDb()->fetchAll($sql);
-
+        
         // Convert query result to an array of domain objects
         $residences = array();
         foreach ($result as $row) {
@@ -32,23 +35,28 @@ class ResidenceDAO extends DAO {
 
      public function find($id) {
         //$sql ="select * from residence where id=?";
-        $sql = "SELECT recense.id , residence.adresse, residence.telephone , villes.commune, villes.inseeVille, villes.codePostal FROM recense, residence, villes WHERE recense.id = residence.idrecense AND residence.id = villes.id AND residence.idrecense = ?";
-
+        $sql = "SELECT recense.id, residence.id , residence.adresse, residence.telephone , villes.id, villes.commune, villes.inseeVille, villes.codePostal FROM recense, residence, villes WHERE recense.idresidence = residence.id AND residence.id = villes.id AND recense.id = ?";
         $row = $this->getDb()->fetchAssoc($sql, array($id));
+        
+        //$this->idvilles = $row['villes.id'];
+        
         if ($row) {
             return $this->buildDomainObject($row);
         } else {
             throw new \Exception("No residence matching id " . $id);
         }
     }
-
+    
     public function save(Residence $residence) {
         $residenceData = array(
             'id' => $residence->getId(),
             'adresse' => $residence->getAdresse(),
             'telephone' => $residence->getTelephone(),
+            //'idvilles' => $residence->getIdVilles(),
+    
             );
-
+        
+          //var_dump($residenceData);
         if ($residence->getId()) {
             // The residence has already been saved : update it
             $this->getDb()->update('residence', $residenceData, array('id' => $residence->getId()));
@@ -59,6 +67,7 @@ class ResidenceDAO extends DAO {
             $id = $this->getDb()->lastInsertId();
             $residence->setId($id);
         }
+        
     }
     
      public function delete($id) {

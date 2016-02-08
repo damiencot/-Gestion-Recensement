@@ -21,7 +21,7 @@ class SituationScolaire extends Diplome {
     
     private $specialites;
     
-    protected $nom;
+    protected $diplome;
     
     private $status = true;
             
@@ -37,6 +37,14 @@ class SituationScolaire extends Diplome {
         return $this->specialites;
     }
 
+    function getDiplome() {
+         return parent::getDiplome();
+    }
+
+    function getStatus() {
+        return $this->status;
+    }
+
     function setId($id) {
         $this->id = $id;
     }
@@ -49,21 +57,15 @@ class SituationScolaire extends Diplome {
         $this->specialites = $specialites;
     }
 
-    function getNom() {
-        return $this->nom;
-    }
-
-    function getStatus() {
-        return $this->status;
-    }
-
-    function setNom($nom) {
-        $this->nom = $nom;
+    function setDiplome($diplome) {
+         parent::setDiplome($diplome);
     }
 
     function setStatus($status) {
         $this->status = $status;
     }
+
+
 
 
     

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="{{ app.request.basepath }}/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="{{ app.request.basepath }}/css/microcms.css" rel="stylesheet">
-    <title>MicroCMS - {% block title %}{% endblock %}</title>
+    <title>Recensement - {% block title %}{% endblock %}</title>
 </head>
 <body>
     <div class="container">
@@ -18,25 +18,24 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="/">MicroCMS</a>
+                    <a class="navbar-brand" href="/OC-MicroCMS/web/admin/">Recensement</a>
                 </div>
                 <div class="collapse navbar-collapse" id="navbar-collapse-target">
                     <ul class="nav navbar-nav navbar-right">
                         {% if app.security.token and is_granted('ROLE_ADMIN') %}
-                            <li class="{% if adminMenu is defined %}active{% endif %}"><a href="/admin"><span class="glyphicon glyphicon-cog"></span> Administration</a></li>
+                            <li class="{% if adminMenu is defined %}active{% endif %}"><a href="/OC-MicroCMS/web/admin/"><span class="glyphicon glyphicon-cog"></span>Accueil</a></li>
                         {% endif %}
                         {% if app.security.token and is_granted('IS_AUTHENTICATED_FULLY') %}
                             <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <span class="glyphicon glyphicon-user"></span> Welcome, {{ app.security.token.user.username }} <b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="{{ path('logout') }}">Log out</a></li>
-                                </ul>
+                            <a href="#" class="dropdown-toggle" >
+                                <span class="glyphicon glyphicon-user"></span> Bienvenue, {{ app.security.token.user.username }} <b class="caret"></b></a>
+                                    <li><a href="/OC-MicroCMS/web/admin/user/{{ app.security.token.user.id }}/edit">Profil</a></li>
+                                    <li><a href="{{ path('logout') }}">Deconnection</a></li>
                             </li>
                         {% else %}
                             <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <span class="glyphicon glyphicon-user"></span> Not connected <b class="caret"></b></a>
+                                <span class="glyphicon glyphicon-user"></span> Non connecter <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     <li><a href="{{ path('login') }}">Log in</a></li>
                                 </ul>
