@@ -11,19 +11,20 @@ namespace MicroCMS\DAO;
 
 use MicroCMS\Domain\Diplome;
 /**
- * Description of RecenseDAO
+ * Description des functions Recenses
  *
  * @author thouars
  */
 class DiplomeDAO  extends DAO{
-    //put your code here
-    
-    
+
+      /*
+       * Recherche génèral de tout les diplomes
+       */
       public function findAll() {
         $sql = "select * from diplome order by id desc";
         $result = $this->getDb()->fetchAll($sql);
 
-        // Convert query result to an array of domain objects
+        // Convertie le résultas de la requête en tableau 
         $diplomes = array();
         foreach ($result as $row) {
             $diplomeId = $row['id'];
@@ -32,8 +33,10 @@ class DiplomeDAO  extends DAO{
         return $diplomes;
     }
     
-    
-     public function find($id) {
+    /*
+     * Recherche des diplomes correspondant au recensé
+     */
+    public function find($id) {
         $sql = "select * from diplome where id=?";
         $row = $this->getDb()->fetchAssoc($sql, array($id));
 
@@ -44,20 +47,23 @@ class DiplomeDAO  extends DAO{
         }
     }
     
-    
+    /*
+     * Sauvegarde du diplome correspondant aux recensé
+     */
     public function save(Diplome $diplome) {
         $diplomeData = array(
             'id' => $diplome->getId(),
-            'nature' => $diplome->getNom(),
+            'diplome' => $diplome->getDiplome(),
             );
 
         if ($diplome->getId()) {
-            // The recense has already been saved : update it
-            $this->getDb()->update('diplome', $diplomeData, array('id' => $recense->getId()));
+            // Le diplome correspondant aux recensé est déjà enregistré donc on le met à jour.
+            $this->getDb()->update('diplome', $diplomeData, array('id' => $diplome->getId()));
         } else {
-            // The recense has never been saved : insert it
+            // Le recensé n'a aucun diplome qui lui est liée donc on le crée
             $this->getDb()->insert('diplome', $diplomeData);
-            // Get the id of the newly created recense and set it on the entity.
+            
+            // Obtenir l'ID du Recense nouvellement créé et mis sur l'entité .
             $id = $this->getDb()->lastInsertId();
             $diplome->setId($id);
         }
@@ -77,7 +83,7 @@ class DiplomeDAO  extends DAO{
     protected function buildDomainObject($row) {
         $diplome = new Diplome();
         $diplome->setId($row['id']);
-        $diplome->setNature($row['nature']);
+        $diplome->setDiplome($row['diplome']);
         return $diplome;
     }
 }

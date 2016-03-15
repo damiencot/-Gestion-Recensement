@@ -10,7 +10,7 @@ class DiplomeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nom', 'text');
+            ->add('diplome', 'text');
     }
 
     public function getNom()

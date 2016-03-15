@@ -11,23 +11,40 @@ namespace MicroCMS\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+
 /**
  * Description of Adresse
  *
  * @author thouars
  */
-class Residence extends AbstractType {
+class ResidenceType extends AbstractType {
     
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
+   
+    
+    
+    public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
-            ->add('adresse', 'text')
-            ->add('telephone', 'text');
-
+                ->add('adresse', 'text')
+                ->add('telephone', 'text')
+                ->add('inseeVille', 'text')
+                ->add('commune', 'text')
+                ->add('codePostal', 'text');
+                //->add('commune',  'choice',  array('choices' =>  $this->commune, 'expanded'=>false, 'multiple'=>false));
+        
+     
+      
     }
 
-    public function getNom()
-    {
+    public function getName() {
         return 'residence';
     }
+    
+     public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+            'data' => 'namespace MicroCMS\Domain\Residence',
+        ));
+    }
+
 }

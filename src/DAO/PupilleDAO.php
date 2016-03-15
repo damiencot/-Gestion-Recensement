@@ -9,7 +9,7 @@
 namespace MicroCMS\DAO;
 
 
-use MicroCMS\Domain\Diplome;
+use MicroCMS\Domain\Pupille;
 /**
  * Description of RecenseDAO
  *
@@ -53,7 +53,7 @@ class PupilleDAO  extends DAO{
 
         if ($diplome->getId()) {
             // The recense has already been saved : update it
-            $this->getDb()->update('diplome', $diplomeData, array('id' => $recense->getId()));
+            $this->getDb()->update('diplome', $diplomeData, array('id' => $diplome->getId()));
         } else {
             // The recense has never been saved : insert it
             $this->getDb()->insert('diplome', $diplomeData);

@@ -1,35 +1,35 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 
 namespace MicroCMS\Domain;
 
 /**
- * Description of Recense
+ * Description des Recense
  *
  * @author thouars
  */
-class Recense {
-    
+class Recense extends Villes {
+
     private $id;
-   
     private $nom;
-    
     private $prenom;
-            
     private $nomUsage;
-    
     private $dateNaissance;
-    
     private $adresseMail;
-    
     private $telephonePortable;
+    private $dateEnregistrement;
     
-    
+    private $dateEnregistrementPresent = 'NOW()';
+
+    function getCommune() {
+        return parent::getCommune();
+    }
+
+    function setCommune($commune) {
+        parent::setCommune($commune);
+    }
+
     function getId() {
         return $this->id;
     }
@@ -86,6 +86,30 @@ class Recense {
         $this->telephonePortable = $telephonePortable;
     }
 
+    function getDateEnregistrement() {
+    /*
+        list($annee, $mois, $jour) = explode("-", $this->dateEnregistrement);
+        $dateFR = $jour . '/' . $mois . '/' . $annee;
+
+        return $dateFR;
+     */
+        
+ 
+     return $this->dateEnregistrement;
+
+    }
+
+    function setDateEnregistrement($dateEnregistrement) {
+        $this->dateEnregistrement = $dateEnregistrement;
+    }
+    
+    
+    function getDateEnregistrementPresent(){
+       
+        
+         return $this->dateEnregistrementPresent;
+    }
 
     
+
 }

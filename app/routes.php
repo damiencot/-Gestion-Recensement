@@ -1,67 +1,47 @@
 <?php
 
-// Home page
-$app->get('/', "MicroCMS\Controller\HomeController::indexAction");
+// Page d accueil
+$app->get('/', "MicroCMS\Controller\HomeController::loginAction");
 
-// Admin zone
-$app->get('/admin/', "MicroCMS\Controller\AdminController::indexAction");
+// Zone home
+$app->get('/home/', "MicroCMS\Controller\HomeController::indexAccueilAction");
 
-// Detailed info about an recense
+// Informations détaillées sur un Recense
 $app->match('/recense/{id}', "MicroCMS\Controller\HomeController::recenseAction");
 
+// Ajouté nouveau Recense
+$app->match('home/recense/add', "MicroCMS\Controller\HomeController::addRecenseAction");
 
+// Editer un recense
+$app->match('home/recense/{id}/edit', "MicroCMS\Controller\HomeController::editRecenseAction");
 
-//Redirection Menu Onglet Residence_Form.html.twig
+// Supprimer un recense
+$app->get('home/recense/{id}/delete', "MicroCMS\Controller\HomeController::deleteRecenseAction");
 
-// Edit an existing recense
-$app->match('/admin/residence/{id}/edit', "MicroCMS\Controller\AdminController::editResidenceAction");
+// Page d'authentification
+$app->get('/login', "MicroCMS\Controller\HomeController::loginAction")->bind('login');  
+// named route so that path ('login') fonctionne dans les modèles Twig
+//nommé parcours de façon à ce chemin ( « login» ) fonctionne dans les modèles Twig
 
-// Add a new recense
-$app->match('/admin/recense/add', "MicroCMS\Controller\AdminController::addRecenseAction");
+// Ajout d'un utilisateur
+$app->match('home/user/add', "MicroCMS\Controller\HomeController::addUserAction");
 
-// Edit an existing recense
-$app->match('/admin/recense/{id}/edit', "MicroCMS\Controller\AdminController::editRecenseAction");
+// Editer un utilisateur
+$app->match('home/user/{id}/edit', "MicroCMS\Controller\HomeController::editUserAction");
 
-// Remove an recense
-$app->get('/admin/recense/{id}/delete', "MicroCMS\Controller\AdminController::deleteRecenseAction");
+// Supprimer un utilisateur
+$app->get('home/user/{id}/delete', "MicroCMS\Controller\HomeController::deleteUserAction");
 
-// Login form
-$app->get('/login', "MicroCMS\Controller\HomeController::loginAction")
-->bind('login');  // named route so that path('login') works in Twig templates
-
-// Add a user
-$app->match('/admin/user/add', "MicroCMS\Controller\AdminController::addUserAction");
-
-// Edit an existing user
-$app->match('/admin/user/{id}/edit', "MicroCMS\Controller\AdminController::editUserAction");
-
-// Remove a user
-$app->get('/admin/user/{id}/delete', "MicroCMS\Controller\AdminController::deleteUserAction");
-
-// API : get all recense
+// API : recupere tout les recense
 $app->get('/api/recenses', "MicroCMS\Controller\ApiController::getRecencesAction");
 
-// API : get an recense
+// API : recupere un recense precis
 $app->get('/api/recense/{id}', "MicroCMS\Controller\ApiController::getRecenseAction");
 
-// API : create an recense
+// API : crée un recense
 $app->post('/api/recense', "MicroCMS\Controller\ApiController::addRecenseAction");
 
-// API : remove an recense
+// API : supprimer un recense
 $app->delete('/api/recense/{id}', "MicroCMS\Controller\ApiController::deleteRecenseAction");
-
-
-
-// API : get all residence
-$app->get('/api/recenses', "MicroCMS\Controller\ApiController::getResidencesAction");
-
-// API : get an residence
-$app->get('/api/recense/{id}', "MicroCMS\Controller\ApiController::getResidencesAction");
-
-// API : create an residence
-$app->post('/api/recense', "MicroCMS\Controller\ApiController::addResidencesAction");
-
-
-
 
 

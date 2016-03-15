@@ -12,26 +12,28 @@
     {% endfor %}
 
 
-
-
+    <link rel="stylesheet" type="text/css" href="jquery.datetimepicker.css"/>
+    <script src="\OC\web\lib\jquery\datetimepicker\jquery.js"></script>
+    <script src="\OC\web\lib\jquery\datetimepicker\jquery.datetimepicker.js"></script>
 
     <div id="Tab1" class="container">	
         <ul  class="nav nav-pills nav-justified ">
             <li class="active"><a  href="#etatcivil" data-toggle="tab">Etat Civil</a></li>
             <li><a href="#adresse" data-toggle="tab">Adresse</a></li>
-            <li><a href="#filiation" data-toggle="tab">Filiation</a></li>
-            <li><a href="#autres" data-toggle="tab">Autres</a></li>
+            <li><a href="#filliation" data-toggle="tab">Filliation</a></li>
+            <li><a href="#autres" data-toggle="tab">Familliale</a></li>
+            <li><a href="#situationScoPro" data-toggle="tab">Situation Scolaire ou Professionel</a></li>
             <li><a href="#recensement" data-toggle="tab">Recensement</a></li>
-            <li><a href="#documents" data-toggle="tab">Documents</a></li>
-
         </ul>
-
+        <!-- Onglet Etat Civil -->
         <div class="tab-content clearfix">
             <div class="tab-pane active" id="etatcivil">
                 {{ form_start(recenseForm, { 'attr': {'class': 'form-horizontal'} }) }}
+                <h3 align="center" >Etat Civil</h3>
                 <div class="form-group">
+                    <!-- Ajout  Nom-->
                     {{ form_label(recenseForm.nom, null, { 'label_attr':  {
-                    'class': 'col-sm-4 control-label'
+                        'class': 'col-sm-4 control-label'
                     }}) }}
                     <div class="col-sm-6">
                         {{ form_errors(recenseForm.nom) }}
@@ -40,6 +42,7 @@
                         }}) }}
                     </div>
                 </div>
+                <!-- Ajout Prenom -->
                 <div class="form-group">
                     {{ form_label(recenseForm.prenom, null, { 'label_attr':  {
                     'class': 'col-sm-4 control-label'
@@ -52,6 +55,7 @@
                         }}) }}
                     </div>
                 </div>
+                <!-- Ajout  Nom d'usage -->
                 <div class="form-group">
                     {{ form_label(recenseForm.nomUsage, null, { 'label_attr':  {
                     'class': 'col-sm-4 control-label'
@@ -64,6 +68,7 @@
                         }}) }}
                     </div>
                 </div>
+                <!-- Ajout Date de Naissance -->
                 <div class="form-group">
                     {{ form_label(recenseForm.dateNaissance, null, { 'label_attr':  {
                     'class': 'col-sm-4 control-label'
@@ -76,6 +81,7 @@
                         }}) }}
                     </div>
                 </div>
+                <!-- Ajout Adresse Mail -->
                 <div class="form-group">
                     {{ form_label(recenseForm.adresseMail, null, { 'label_attr':  {
                     'class': 'col-sm-4 control-label'
@@ -88,7 +94,7 @@
                         }}) }}
                     </div>
                 </div>
-                <!--   ICI  -->
+                <!-- Ajout Telephone portable -->
                 <div class="form-group">
                     {{ form_label(recenseForm.telephonePortable, null, { 'label_attr':  {
                     'class': 'col-sm-4 control-label'
@@ -101,84 +107,400 @@
                         }}) }}
                     </div>
                 </div>
-                <!--   ICI  -->
+                <!-- Ajout date d'enregistrement -->
+                <div class="form-group">
+                    {{ form_label(recenseForm.dateEnregistrement, null, { 'label_attr':  {
+                    'class': 'col-sm-4 control-label'
+                    }}) }}
+                    <div class="col-sm-6">
+                        {{ form_errors(recenseForm.dateEnregistrement) }}
+                        {{ form_widget(recenseForm.dateEnregistrement, { 'attr':  {
+                        'class': 'form-control',
+                        'rows': '8',
+                        'readonly':'readonly'
+                        }}) }}
+                    </div>
+                </div>
+
+                <!--   Boutton submit  -->
                 <div class="form-group">
                     <div class="col-sm-offset-4 col-sm-3">
-                        <input type="submit" class="btn btn-primary" value="Save" />
+                        <input type="submit" class="btn btn-primary" value="Sauvegarder" />
                     </div>
                 </div>
                 {{ form_end(recenseForm) }}
             </div>
+
+
+            <!-- Onglet Adresse -->
+
             <div class="tab-pane" id="adresse">
-                {{ form_start(recenseForm, { 'attr': {'class': 'form-horizontal'} }) }}
+                {{ form_start(residenceForm, { 'attr': {'class': 'form-horizontal'} }) }}
+                <h3 align="center" >Domicile</h3>
                 <div class="form-group">
-                    {{ form_label(recenseForm.telephonePortable, null, { 'label_attr':  {
+                    <!-- Ajout Commune -->
+                    {{ form_label(residenceForm.commune, null, { 'label_attr':  {
                     'class': 'col-sm-4 control-label'
                     }}) }}
-                    <div class="col-sm-6">
-                        {{ form_errors(recenseForm.telephonePortable) }}
-                        {{ form_widget(recenseForm.telephonePortable, { 'attr':  {
+                    <div class="col-sm-6" id ="commune">
+                        {{ form_errors(residenceForm.commune) }}
+                        {{ form_widget(residenceForm.commune, { 'attr':  {
                         'class': 'form-control',
                         'rows': '8'
                         }}) }}
                     </div>
                 </div>
-                <!--   ICI  -->
+                <!-- Ajout InseeVille -->
                 <div class="form-group">
-                    {{ form_label(recenseForm.telephonePortable, null, { 'label_attr':  {
+                    {{ form_label(residenceForm.inseeVille, null, { 'label_attr':  {
                     'class': 'col-sm-4 control-label'
                     }}) }}
                     <div class="col-sm-6">
-                        {{ form_errors(recenseForm.telephonePortable) }}
-                        {{ form_widget(recenseForm.telephonePortable, { 'attr':  {
+                        {{ form_errors(residenceForm.inseeVille) }}
+                        {{ form_widget(residenceForm.inseeVille, { 'attr':  {
+                        'class': 'form-control',
+                        'rows': '8',
+                        'readonly':'readonly'
+                        }}) }}
+                    </div>
+                </div>
+                <!-- Ajout Code Postal -->
+                <div class="form-group">
+                    {{ form_label(residenceForm.codePostal, null, { 'label_attr':  {
+                    'class': 'col-sm-4 control-label'
+                    }}) }}
+                    <div class="col-sm-6">
+                        {{ form_errors(residenceForm.codePostal) }}
+                        {{ form_widget(residenceForm.codePostal, { 'attr':  {
                         'class': 'form-control',
                         'rows': '8'
                         }}) }}
                     </div>
                 </div>
-                <!--   ICI  -->
+                <!-- Ajout Adresse -->
+                <div class="form-group">
+                    {{ form_label(residenceForm.adresse, null, { 'label_attr':  {
+                    'class': 'col-sm-4 control-label'
+                    }}) }}
+                    <div class="col-sm-6">
+                        {{ form_errors(residenceForm.adresse) }}
+                        {{ form_widget(residenceForm.adresse, { 'attr':  {
+                        'class': 'form-control',
+                        'rows': '8'
+                        }}) }}
+                    </div>
+                </div>
+                <!--   Ajout telephone  -->
+                <div class="form-group">
+                    {{ form_label(residenceForm.telephone, null, { 'label_attr':  {
+                    'class': 'col-sm-4 control-label'
+                    }}) }}
+                    <div class="col-sm-6">
+                        {{ form_errors(residenceForm.telephone) }}
+                        {{ form_widget(residenceForm.telephone, { 'attr':  {
+                        'class': 'form-control',
+                        'rows': '8'
+                        }}) }}
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <div class="col-sm-offset-4 col-sm-3">
-                        <input type="submit" class="btn btn-primary" value="Save" />
+                        <input type="submit" class="btn btn-primary" value="Sauvegarder" />
                     </div>
                 </div>
-                {{ form_end(recenseForm) }}
+                {{ form_end(residenceForm) }}
             </div>
-            <!-- ICI -->
-            <div class="tab-pane" id="filiation">
-                {{ form_start(recenseForm, { 'attr': {'class': 'form-horizontal'} }) }}
+
+            <!-- Onglet Filliation -->
+            <div class="tab-pane" id="filliation">
+                {{ form_start(filliationPereForm, { 'attr': {'class': 'form-horizontal'} }) }}
+
+                <!-- Fiche Pére -->
+
+                <h3 align="center" >Pére</h3>
+                <!-- Ajout Nom -->
                 <div class="form-group">
-                    {{ form_label(recenseForm.nom, null, { 'label_attr':  {
+                    {{ form_label(filliationPereForm.nom, null, { 'label_attr':  {
                     'class': 'col-sm-4 control-label'
                     }}) }}
                     <div class="col-sm-6">
-                        {{ form_errors(recenseForm.nom) }}
-                        {{ form_widget(recenseForm.nom, { 'attr':  {
+                        {{ form_errors(filliationPereForm.nom) }}
+                        {{ form_widget(filliationPereForm.nom, { 'attr':  {
                         'class': 'form-control',
                         'rows': '8'
                         }}) }}
                     </div>
                 </div>
-                <!--   ICI  -->
+                <!--   Ajout Prenom  -->
                 <div class="form-group">
-                    {{ form_label(recenseForm.prenom, null, { 'label_attr':  {
+                    {{ form_label(filliationPereForm.prenom, null, { 'label_attr':  {
                     'class': 'col-sm-4 control-label'
                     }}) }}
                     <div class="col-sm-6">
-                        {{ form_errors(recenseForm.prenom) }}
-                        {{ form_widget(recenseForm.prenom, { 'attr':  {
+                        {{ form_errors(filliationPereForm.prenom) }}
+                        {{ form_widget(filliationPereForm.prenom, { 'attr':  {
                         'class': 'form-control',
                         'rows': '8'
                         }}) }}
                     </div>
                 </div>
-                <!--   ICI  -->
+                <!--   Ajout Date de naissance  -->
+                <div class="form-group">
+                    {{ form_label(filliationPereForm.dateNaissance, null, { 'label_attr':  {
+                    'class': 'col-sm-4 control-label'
+                    }}) }}
+                    <div class="col-sm-6">
+                        {{ form_errors(filliationPereForm.dateNaissance) }}
+                        {{ form_widget(filliationPereForm.dateNaissance, { 'attr':  {
+                        'class': 'form-control',
+                        'rows': '8'
+                        }}) }}
+                    </div>
+                </div>
+                <!--   Ajout Sexe  -->
+                <div class="form-group" style="display: none;">
+                    {{ form_label(filliationPereForm.sexe, null, { 'label_attr':  {
+                    'class': 'col-sm-4 control-label'
+                    }}) }}
+                    <div class="col-sm-6">
+                        {{ form_errors(filliationPereForm.sexe) }}
+                        {{ form_widget(filliationPereForm.sexe, { 'attr':  {
+                        'class': 'form-control',
+                        'rows': '8',
+                        'hidden': '8'
+                        }}) }}
+                    </div>
+                </div>
+                <!--   Ajout Pays  -->
+                <div class="form-group">
+                    {{ form_label(filliationPereForm.pays, null, { 'label_attr':  {
+                    'class': 'col-sm-4 control-label'
+                    }}) }}
+                    <div class="col-sm-6">
+                        {{ form_errors(filliationPereForm.pays) }}
+                        {{ form_widget(filliationPereForm.pays, { 'attr':  {
+                        'class': 'form-control',
+                        'rows': '8'
+                        }}) }}
+                    </div>
+                </div>
                 <div class="form-group">
                     <div class="col-sm-offset-4 col-sm-3">
-                        <input type="submit" class="btn btn-primary" value="Save" />
+                        <input type="submit" class="btn btn-primary" value="Sauvegarder" />
                     </div>
                 </div>
-                {{ form_end(recenseForm) }}
+
+                {{ form_end(filliationPereForm) }}
+
+                {{ form_start(filliationMereForm, { 'attr': {'class': 'form-horizontal'} }) }}
+
+
+                <!-- Fiche Pére -->
+
+                <h3 align="center" >Mére</h3>
+                <!-- Ajout Nom -->
+                <div class="form-group">
+
+                    {{ form_label(filliationMereForm.nom, null, { 'label_attr':  {
+                    'class': 'col-sm-4 control-label'
+                    }}) }}
+                    <div class="col-sm-6">
+                        {{ form_errors(filliationMereForm.nom) }}
+                        {{ form_widget(filliationMereForm.nom, { 'attr':  {
+                        'class': 'form-control',
+                        'rows': '8'
+                        }}) }}
+                    </div>
+                </div>
+                <!--   Ajout Prenom  -->
+                <div class="form-group">
+                    {{ form_label(filliationMereForm.prenom, null, { 'label_attr':  {
+                    'class': 'col-sm-4 control-label'
+                    }}) }}
+                    <div class="col-sm-6">
+                        {{ form_errors(filliationMereForm.prenom) }}
+                        {{ form_widget(filliationMereForm.prenom, { 'attr':  {
+                        'class': 'form-control',
+                        'rows': '8'
+                        }}) }}
+                    </div>
+                </div>
+                <!--   Ajout Date de naissance  -->
+                <div class="form-group">
+                    {{ form_label(filliationMereForm.dateNaissance, null, { 'label_attr':  {
+                    'class': 'col-sm-4 control-label'
+                    }}) }}
+                    <div class="col-sm-6">
+                        {{ form_errors(filliationMereForm.dateNaissance) }}
+                        {{ form_widget(filliationMereForm.dateNaissance, { 'attr':  {
+                        'class': 'form-control',
+                        'rows': '8'
+                        }}) }}
+                    </div>
+                </div>
+                <!--   Ajout Sexe  -->
+                <div class="form-group" style="display: none;">
+                    {{ form_label(filliationMereForm.sexe, null, { 'label_attr':  {
+                    'class': 'col-sm-4 control-label'
+                    }}) }}
+                    <div class="col-sm-6">
+                        {{ form_errors(filliationMereForm.sexe) }}
+                        {{ form_widget(filliationMereForm.sexe, { 'attr':  {
+                        'class': 'form-control',
+                        'rows': '8'
+                        }}) }}
+                    </div>
+                </div>
+                <!--   Ajout Pays  -->
+                <div class="form-group">
+                    {{ form_label(filliationMereForm.pays, null, { 'label_attr':  {
+                    'class': 'col-sm-4 control-label'
+                    }}) }}
+                    <div class="col-sm-6">
+                        {{ form_errors(filliationMereForm.pays) }}
+                        {{ form_widget(filliationMereForm.pays, { 'attr':  {
+                        'class': 'form-control',
+                        'rows': '8'
+                        }}) }}
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <div class="col-sm-offset-4 col-sm-3">
+                        <input type="submit" class="btn btn-primary" value="Sauvegarder" />
+                    </div>
+                </div>
+                {{ form_end(filliationMereForm) }}
+            </div>
+
+
+
+            <!---Onglet Autres--->
+
+            <div class="tab-pane" id="autres">
+                {{ form_start(infoComplementaireForm, { 'attr': {'class': 'form-horizontal'} }) }}
+                <h3 align="center" >Situation de famille </h3>
+                <div class="form-group">
+                    <!-- Ajout Soeur et Frere -->
+                    {{ form_label(infoComplementaireForm.soeurEtFrere, null, { 'label_attr':  {
+                    'class': 'col-sm-4 control-label'
+                    }}) }}
+                    <div class="col-sm-6">
+                        {{ form_errors(infoComplementaireForm.soeurEtFrere) }}
+                        {{ form_widget(infoComplementaireForm.soeurEtFrere, { 'attr':  {
+                        'class': 'form-control',
+                        'rows': '8'
+                        }}) }}
+                    </div>
+                </div>
+
+                <!--   Ajout Enfant  -->
+                <div class="form-group">
+                    {{ form_label(infoComplementaireForm.enfantACharge, null, { 'label_attr':  {
+                    'class': 'col-sm-4 control-label'
+                    }}) }}
+                    <div class="col-sm-6">
+                        {{ form_errors(infoComplementaireForm.enfantACharge) }}
+                        {{ form_widget(infoComplementaireForm.enfantACharge, { 'attr':  {
+                        'class': 'form-control',
+                        'rows': '8'
+                        }}) }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-4 col-sm-3">
+                        <input type="submit" class="btn btn-primary" value="Sauvegarder" />
+                    </div>
+                </div>
+                {{ form_end(infoComplementaireForm) }}
+
+            </div>
+
+
+            <div class="tab-pane" id="situationScoPro">
+
+
+                <!--   Ajout  Situation scolaire ou professionnelle -->
+
+                {{ form_start(scolaireForm, { 'attr': {'class': 'form-horizontal'} }) }}
+                <!-- Ajout Etude -->
+                <div class="idscolaire">
+                    <h3 align="center" >Situation Scolaire </h3>
+                    <div class="form-group">
+                        {{ form_start(scolaireForm, { 'attr': {'class': 'form-horizontal'} }) }}
+                        {{ form_label(scolaireForm.etude, null, { 'label_attr':  {
+                    'class': 'col-sm-4 control-label'
+                        }}) }}
+                        <div class="col-sm-6">
+                            {{ form_errors(scolaireForm.etude) }}
+                            {{ form_widget(scolaireForm.etude, { 'attr':  {
+                        'class': 'form-control',
+                        'rows': '8'
+                            }}) }}
+                        </div>
+                    </div>
+                    <!-- Ajout Specialites -->
+                    <div class="form-group">
+                        {{ form_start(scolaireForm, { 'attr': {'class': 'form-horizontal'} }) }}
+                        {{ form_label(scolaireForm.specialites, null, { 'label_attr':  {
+                    'class': 'col-sm-4 control-label'
+                        }}) }}
+                        <div class="col-sm-6">
+                            {{ form_errors(scolaireForm.specialites) }}
+                            {{ form_widget(scolaireForm.specialites, { 'attr':  {
+                        'class': 'form-control',
+                        'rows': '8'
+                            }}) }}
+                        </div>
+                    </div>
+                    <!-- Ajout Diplome -->
+                    <div class="form-group">
+                        {{ form_start(scolaireForm, { 'attr': {'class': 'form-horizontal'} }) }}
+                        {{ form_label(scolaireForm.diplome, null, { 'label_attr':  {
+                    'class': 'col-sm-4 control-label'
+                        }}) }}
+                        <div class="col-sm-6">
+                            {{ form_errors(scolaireForm.diplome) }}
+                            {{ form_widget(scolaireForm.diplome, { 'attr':  {
+                        'class': 'form-control',
+                        'rows': '8'
+                            }}) }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-4 col-sm-3">
+                        <input type="submit" class="btn btn-primary" value="Sauvegarder" />
+                    </div>
+                </div>
+                {{ form_end(scolaireForm) }}
+
+                <div class="idProffesionel">
+                    <h3 align="center" >Situation Professionel </h3>
+                    <div class="form-group">
+                        {{ form_start(professionForm, { 'attr': {'class': 'form-horizontal'} }) }}
+                        {{ form_label(professionForm.libelle, null, { 'label_attr':  {
+                    'class': 'col-sm-4 control-label'
+                        }}) }}
+                        <div class="col-sm-6">
+                            {{ form_errors(professionForm.libelle) }}
+                            {{ form_widget(professionForm.libelle, { 'attr':  {
+                        'class': 'form-control',
+                        'rows': '8'
+                            }}) }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-4 col-sm-3">
+                            <input type="submit" class="btn btn-primary" value="Sauvegarder" />
+                        </div>
+                    </div>
+                    {{ form_end(professionForm) }}
+                </div>   
             </div>
         </div>
     </div>
@@ -187,6 +509,7 @@
     <!-- Bootstrap core JavaScript -->
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
 {% endblock %}

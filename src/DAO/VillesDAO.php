@@ -8,33 +8,61 @@
 
 namespace MicroCMS\DAO;
 
-
 use MicroCMS\Domain\Villes;
+
 /**
  * Description of RecenseDAO
  *
  * @author thouars
  */
-class VillesDAO  extends DAO{
-    //put your code here
-    
-    
-      public function findAll() {
-        $sql = "select * from villes order by id desc";
-        $result = $this->getDb()->fetchAll($sql);
+class VillesDAO extends DAO {
 
-        // Convert query result to an array of domain objects
-        $villes = array();
-        foreach ($result as $row) {
-            $villeId = $row['id'];
-            $villes[$villeId] = $this->buildDomainObject($row);
+    //put your code here
+
+
+    public function findAll() {
+        $sql = "select * from villes order by id desc";
+        //$result = $this->getDb()->fetchAll($sql);
+        /*
+          // Convert query result to an array of domain objects
+          $villes = array();
+          foreach ($result as $row) {
+          $villeId = $row['id'];
+          $villes[$villeId] = $this->buildDomainObject($row);
+          }
+          return $villes;
+         */
+        
+        $result = $this->getDb()->fetchAssoc($sql);
+        if ($result) {
+            return $this->buildDomainObject($result);
+        } else {
+            throw new \Exception("No villes matching ");
         }
-        return $villes;
+    
+    
     }
     
     
-     public function find($id) {
-        $sql = "select * from villes where id=?";
+    public function findCommune() {
+        $sql = "select commune from villes order by id desc";
+
+        $row = $this->getDb()->fetchAll($sql);
+        $results = array($row);
+        foreach ($results as $row) {
+            $villes = $results['commune'];
+            return $villes;
+            
+        }
+        
+    }
+
+    public function find($id) {
+        //$sql="SELECT * FROM villes WHERE id =(SELECT id FROM recense WHERE idVilles = ?)";
+        //Selection toute les villes qui correspondans aux ID des différents recense.
+        //$sql = "SELECT r.id, v.commune FROM recense r INNER JOIN villes v ON r.id = v.id ";
+        //$sql ="SELECT recense.id, villes.commune, villes.inseeVille, villes.codePostal FROM recense, villes WHERE recense.id = villes.id ";
+        $sql = "SELECT r.id, v.id, v.inseeVille, v.commune, v.codePostal FROM recense r INNER JOIN villes v ON r.id = v.id WHERE r.id = ?";
         $row = $this->getDb()->fetchAssoc($sql, array($id));
 
         if ($row) {
@@ -43,15 +71,14 @@ class VillesDAO  extends DAO{
             throw new \Exception("No villes matching id " . $id);
         }
     }
-    
-    
+
     public function save(Villes $ville) {
         $villeData = array(
             'id' => $ville->getId(),
             'inseeVille' => $ville->getInseeVille(),
-            'nom' => $ville->getNom(),
+            'commune' => $ville->getCommune(),
             'codePostal' => $ville->getCodePostal(),
-            );
+        );
 
         if ($ville->getId()) {
             // The recense has already been saved : update it
@@ -64,8 +91,8 @@ class VillesDAO  extends DAO{
             $ville->setId($id);
         }
     }
-    
-     public function delete($id) {
+
+    public function delete($id) {
         // Delete the recense
         $this->getDb()->delete('ville', array('id' => $id));
     }
@@ -77,11 +104,12 @@ class VillesDAO  extends DAO{
      * @return \MicroCMS\Domain\Recense
      */
     protected function buildDomainObject($row) {
-        $ville = new Ville();
-        $ville->setId($row['id']);
-        $ville->setInseeVille($row['inseeVille']);
-        $ville->setNom($row['nom']);
-        $ville->setCodePostal($row['codePostal']);
-        return $ville;
+        $villes = new Villes();
+        $villes->setId($row['id']);
+        $villes->setInseeVille($row['inseeVille']);
+        $villes->setCommune($row['commune']);
+        $villes->setCodePostal($row['codePostal']);
+        return $villes;
     }
+
 }

@@ -1,0 +1,71 @@
+{% extends "layout.html.twig" %}
+{% set adminMenu = true %}
+
+{% block title %}Liste Recense{% endblock %}
+
+{% block content %}
+    <h2 class="text-center">{{ block('title') }}</h2>
+    {% for flashMessage in app.session.flashbag.get('success') %}
+        <div class="alert alert-success">
+            {{ flashMessage }}
+        </div>
+    {% endfor %}
+
+    <div class="tab-content">
+
+        <div class="tab-pane fade in active adminTable" id="recenses">
+
+
+            <div class="table-responsive">
+                <table class="table table-hover table-condensed">
+                    <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>Prenom</th>
+                            <th>date de naissance</th>
+                            <th>Enregistrée le</th><!-- Actions column -->
+                            <th>Commune</th>
+                        </tr>
+                    </thead>
+                    {% for recense in recenses %}
+
+
+                        <tr class="list">
+                            <td><a class="recenseTitle" href="/recense/{{ recense.id }}">{{ recense.nom }}</a></td>
+                            <td>{{ recense.prenom | truncate(60) }}</td>
+                            <td>{{ recense.dateNaissance | truncate(60) }}</td>
+                            <td>{{ recense.dateEnregistrement | truncate(60) }}</td>
+                            <td>{{ recense.commune | truncate(60) }}</td>
+
+                            <td>
+                                <a href="/OC/web/home/recense/{{ recense.id }}/edit" class="btn btn-info btn-xs" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>
+                                <button type="button" class="btn btn-danger btn-xs" title="Delete" data-toggle="modal" data-target="#recenseDialog{{ recense.id }}"><span class="glyphicon glyphicon-remove"></span>
+                                </button>
+                                <div class="modal fade" id="recenseDialog{{ recense.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                <h4 class="modal-title" id="myModalLabel">Confirmation nécessaire </h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                Voulez vous vraiment supprimer ce recense ?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                                <a href="/OC/web/home/recense/{{ recense.id }}/delete" class="btn btn-danger">Confirm</a>
+                                            </div>
+                                        </div><!-- /.modal-content -->
+                                    </div><!-- /.modal-dialog -->
+                                </div><!-- /.modal -->
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            <a href="/OC/web/home/recense/add"><button type="button" class="btn btn-primary" id="btn.save"><span class="glyphicon glyphicon-plus"></span> Ajouter Recense</button></a>
+        </div>
+
+    </div>
+
+{% endblock %}

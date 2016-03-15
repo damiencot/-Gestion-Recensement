@@ -1,26 +1,26 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 namespace MicroCMS\Domain;
 
 /**
- * Description of Adresse
+ * Description des Adresses
  *
  * @author thouars
  */
-class Residence {
-    
+class Residence extends Villes {
+
     private $id;
-    
     private $adresse;
-    
     private $telephone;
+    protected $commune;
+    protected $inseeVille;
+    protected $codePostal;
+    protected $idVilles;
     
+    public function __toString() {
+        return $this->getCommune();
+    }
     
     function getId() {
         return $this->id;
@@ -32,6 +32,22 @@ class Residence {
 
     function getTelephone() {
         return $this->telephone;
+    }
+
+    function getCommune() {
+        return parent::getCommune();
+    }
+
+    function getInseeVille() {
+        return parent::getInseeVille();
+    }
+
+    function getCodePostal() {
+        return parent::getCodePostal();
+    }
+
+    function getIdVilles() {
+        return parent::getId();
     }
 
     function setId($id) {
@@ -46,6 +62,20 @@ class Residence {
         $this->telephone = $telephone;
     }
 
+    function setCodePostal($codePostal) {
+        parent::setCodePostal($codePostal);
+    }
 
-    
+    function setCommune($commune) {
+        parent::setCommune($commune);
+    }
+
+    function setInseeVille($inseeVille) {
+        parent::setInseeVille($inseeVille);
+    }
+
+    function setIdVilles($id) {
+        parent::setId($id);
+    }
+
 }

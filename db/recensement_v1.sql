@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  127.0.0.1
--- Généré le :  Jeu 14 Janvier 2016 à 12:11
+-- Généré le :  Ven 12 Février 2016 à 16:24
 -- Version du serveur :  5.6.17
 -- Version de PHP :  5.5.12
 
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Base de données :  `recensement_v0`
+-- Base de données :  `recensement_v1`
 --
 
 -- --------------------------------------------------------
@@ -28,21 +28,19 @@ SET time_zone = "+00:00";
 
 CREATE TABLE IF NOT EXISTS `diplome` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nom` varchar(45) COLLATE utf8_unicode_520_ci DEFAULT NULL,
-  `idrecense` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `idrecense` (`idrecense`)
+  `diplome` varchar(45) COLLATE utf8_unicode_520_ci DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_520_ci AUTO_INCREMENT=5 ;
 
 --
 -- Contenu de la table `diplome`
 --
 
-INSERT INTO `diplome` (`id`, `nom`, `idrecense`) VALUES
-(1, 'BREVET', 0),
-(2, 'BTS', 0),
-(3, 'DNB CAPD CEPE', 0),
-(4, 'IUT', 0);
+INSERT INTO `diplome` (`id`, `diplome`) VALUES
+(1, 'BREVET'),
+(2, 'BTS'),
+(3, 'DNB CAPD CEPE'),
+(4, 'IUT');
 
 -- --------------------------------------------------------
 
@@ -52,14 +50,24 @@ INSERT INTO `diplome` (`id`, `nom`, `idrecense`) VALUES
 
 CREATE TABLE IF NOT EXISTS `filliationparents` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nom` varchar(45) COLLATE utf8_unicode_520_ci DEFAULT NULL,
-  `prenom` varchar(45) COLLATE utf8_unicode_520_ci DEFAULT NULL,
-  `dateNaissance` varchar(45) COLLATE utf8_unicode_520_ci DEFAULT NULL,
-  `lieuNaissance` varchar(45) COLLATE utf8_unicode_520_ci DEFAULT NULL,
-  `recense_idrecense` int(11) NOT NULL,
+  `nom` varchar(45) COLLATE utf8_unicode_520_ci NOT NULL,
+  `prenom` varchar(45) COLLATE utf8_unicode_520_ci NOT NULL,
+  `dateNaissance` date NOT NULL,
+  `sexe` tinyint(1) NOT NULL,
+  `idNationalites` int(11) NOT NULL,
+  `idfamille` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `fk_filliationParents_recense1_idx` (`recense_idrecense`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_520_ci AUTO_INCREMENT=1 ;
+  KEY `idNationalites` (`idNationalites`),
+  KEY `prenom` (`prenom`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_520_ci AUTO_INCREMENT=3 ;
+
+--
+-- Contenu de la table `filliationparents`
+--
+
+INSERT INTO `filliationparents` (`id`, `nom`, `prenom`, `dateNaissance`, `sexe`, `idNationalites`, `idfamille`) VALUES
+(1, 'Jean', 'Michelle', '1975-04-06', 1, 76, 1),
+(2, 'Giselle', 'Michelle', '1975-04-08', 0, 76, 1);
 
 -- --------------------------------------------------------
 
@@ -313,6 +321,25 @@ INSERT INTO `nationalites` (`id`, `pays`, `inseePays`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `profession`
+--
+
+CREATE TABLE IF NOT EXISTS `profession` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `libelle` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
+
+--
+-- Contenu de la table `profession`
+--
+
+INSERT INTO `profession` (`id`, `libelle`) VALUES
+(1, 'Boulangeres');
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `pupille`
 --
 
@@ -342,28 +369,42 @@ INSERT INTO `pupille` (`id`, `nature`) VALUES
 
 CREATE TABLE IF NOT EXISTS `recense` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nom` varchar(45) COLLATE utf8_unicode_520_ci DEFAULT NULL,
-  `prenom` varchar(45) COLLATE utf8_unicode_520_ci DEFAULT NULL,
+  `nom` varchar(45) COLLATE utf8_unicode_520_ci NOT NULL,
+  `prenom` varchar(45) COLLATE utf8_unicode_520_ci NOT NULL,
   `nomUsage` varchar(45) COLLATE utf8_unicode_520_ci DEFAULT NULL,
-  `dateNaissance` date DEFAULT NULL,
-  `adresseMail` varchar(45) COLLATE utf8_unicode_520_ci DEFAULT NULL,
-  `telephonePortable` varchar(11) COLLATE utf8_unicode_520_ci DEFAULT NULL,
+  `dateNaissance` date NOT NULL,
+  `adresseMail` varchar(45) COLLATE utf8_unicode_520_ci NOT NULL,
+  `telephonePortable` varchar(11) COLLATE utf8_unicode_520_ci NOT NULL,
+  `dateEnregistrement` date NOT NULL,
   `idresidence` int(11) NOT NULL,
   `idVilles` int(11) NOT NULL,
-  `iddiplome` int(11) NOT NULL,
+  `iddiplome` int(11) DEFAULT NULL,
+  `idFamille` int(11) NOT NULL,
+  `idNationalites` int(11) NOT NULL,
+  `idNationalitesDeux` int(11) DEFAULT NULL,
+  `idSituationFamille` int(11) NOT NULL,
+  `idMatrimonial` int(11) NOT NULL,
+  `idSituationScolaire` int(11) DEFAULT NULL,
+  `idProfession` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `idresidence` (`idresidence`),
   KEY `idVilles` (`idVilles`),
-  KEY `iddiplome` (`iddiplome`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_520_ci AUTO_INCREMENT=3 ;
+  KEY `iddiplome` (`iddiplome`),
+  KEY `idFilliationParents` (`idFamille`),
+  KEY `idNationalites` (`idNationalites`),
+  KEY `idSituationFamille` (`idSituationFamille`),
+  KEY `idMatrimonial` (`idMatrimonial`),
+  KEY `idSituationScolaire` (`idSituationScolaire`),
+  KEY `idProfession` (`idProfession`),
+  KEY `idNationalitesDeux` (`idNationalitesDeux`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_520_ci AUTO_INCREMENT=2 ;
 
 --
 -- Contenu de la table `recense`
 --
 
-INSERT INTO `recense` (`id`, `nom`, `prenom`, `nomUsage`, `dateNaissance`, `adresseMail`, `telephonePortable`, `idresidence`, `idVilles`, `iddiplome`) VALUES
-(1, 'julien', 'henri', 'julien', '1994-01-12', 'julien.test@test.test', '0645875236', 0, 0, 0),
-(2, 'melanies', 'variel', 'melanie', '1994-01-20', 'melanie.variel@test.com', '0642684521', 0, 0, 0);
+INSERT INTO `recense` (`id`, `nom`, `prenom`, `nomUsage`, `dateNaissance`, `adresseMail`, `telephonePortable`, `dateEnregistrement`, `idresidence`, `idVilles`, `iddiplome`, `idFamille`, `idNationalites`, `idNationalitesDeux`, `idSituationFamille`, `idMatrimonial`, `idSituationScolaire`, `idProfession`) VALUES
+(1, 'juliens', 'Michelles', 'ilioss', '1995-02-23', 'julien.test@test.test', '0645875236', '2016-01-12', 1, 1, 2, 1, 76, 2, 1, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -374,11 +415,9 @@ INSERT INTO `recense` (`id`, `nom`, `prenom`, `nomUsage`, `dateNaissance`, `adre
 CREATE TABLE IF NOT EXISTS `residence` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `adresse` text COLLATE utf8_unicode_520_ci,
-  `telephone` int(11) DEFAULT NULL,
-  `idrecense` int(11) NOT NULL,
+  `telephone` varchar(11) COLLATE utf8_unicode_520_ci DEFAULT NULL,
   `idvilles` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `idrecense` (`idrecense`),
   KEY `idvilles` (`idvilles`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_520_ci AUTO_INCREMENT=3 ;
 
@@ -386,8 +425,9 @@ CREATE TABLE IF NOT EXISTS `residence` (
 -- Contenu de la table `residence`
 --
 
-INSERT INTO `residence` (`id`, `adresse`, `telephone`, `idrecense`, `idvilles`) VALUES
-(1, '29 , rue de la tour', 549524185, 1, 35);
+INSERT INTO `residence` (`id`, `adresse`, `telephone`, `idvilles`) VALUES
+(1, '29 , rue de la toures', '0549524185', 35),
+(2, '17,rue hutier', '0549857215', 35);
 
 -- --------------------------------------------------------
 
@@ -397,20 +437,23 @@ INSERT INTO `residence` (`id`, `adresse`, `telephone`, `idrecense`, `idvilles`) 
 
 CREATE TABLE IF NOT EXISTS `situationfamilliale` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `soeur` int(11) DEFAULT NULL,
-  `frere` int(11) DEFAULT NULL,
+  `soeurEtFrere` int(11) DEFAULT NULL,
   `enfantACharge` int(11) DEFAULT NULL,
-  `pupille_idpupille` int(11) NOT NULL,
-  PRIMARY KEY (`id`,`pupille_idpupille`),
-  KEY `fk_situationFamilliale_pupille1_idx` (`pupille_idpupille`)
+  `idrecense` int(11) NOT NULL,
+  `ippupille` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idrecense` (`idrecense`),
+  KEY `idrecense_2` (`idrecense`),
+  KEY `idrecense_3` (`idrecense`),
+  KEY `ippupille` (`ippupille`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_520_ci AUTO_INCREMENT=2 ;
 
 --
 -- Contenu de la table `situationfamilliale`
 --
 
-INSERT INTO `situationfamilliale` (`id`, `soeur`, `frere`, `enfantACharge`, `pupille_idpupille`) VALUES
-(1, 1, 1, 1, 1);
+INSERT INTO `situationfamilliale` (`id`, `soeurEtFrere`, `enfantACharge`, `idrecense`, `ippupille`) VALUES
+(1, 2, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -447,18 +490,22 @@ INSERT INTO `situationmatrimonial` (`id`, `libelle`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `situationscolaire` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `etude` varchar(45) COLLATE utf8_unicode_520_ci DEFAULT NULL,
   `specialites` varchar(45) COLLATE utf8_unicode_520_ci DEFAULT NULL,
-  `recense_idrecense` int(11) NOT NULL,
-  `recense_residence_idadresse` int(11) NOT NULL,
-  `recense_situationMatrimonial_idsituationMatrimonial` int(11) NOT NULL,
-  `recense_situationFamilliale_idsituationFamilliale` int(11) NOT NULL,
   `diplome_iddiplome` int(11) NOT NULL,
-  PRIMARY KEY (`id`,`recense_idrecense`,`recense_residence_idadresse`,`recense_situationMatrimonial_idsituationMatrimonial`,`recense_situationFamilliale_idsituationFamilliale`),
-  KEY `fk_situationScolaire_recense1_idx` (`recense_idrecense`,`recense_residence_idadresse`,`recense_situationMatrimonial_idsituationMatrimonial`,`recense_situationFamilliale_idsituationFamilliale`),
-  KEY `fk_situationScolaire_diplome1_idx` (`diplome_iddiplome`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_520_ci;
+  `idrecense` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_situationScolaire_diplome1_idx` (`diplome_iddiplome`),
+  KEY `idrecense` (`idrecense`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_520_ci AUTO_INCREMENT=2 ;
+
+--
+-- Contenu de la table `situationscolaire`
+--
+
+INSERT INTO `situationscolaire` (`id`, `etude`, `specialites`, `diplome_iddiplome`, `idrecense`) VALUES
+(1, 'commerces', 'reseaux', 2, 1);
 
 -- --------------------------------------------------------
 
@@ -480,10 +527,8 @@ CREATE TABLE IF NOT EXISTS `t_user` (
 --
 
 INSERT INTO `t_user` (`usr_id`, `usr_name`, `usr_password`, `usr_salt`, `usr_role`) VALUES
-(1, 'JohnDoe', 'L2nNR5hIcinaJkKR+j4baYaZjcHS0c3WX2gjYF6Tmgl1Bs+C9Qbr+69X8eQwXDvw0vp73PrcSeT0bGEW5+T2hA==', 'YcM=A$nsYzkyeDVjEUa7W9K', 'ROLE_USER'),
 (2, 'JaneDoe', 'EfakNLxyhHy2hVJlxDmVNl1pmgjUZl99gtQ+V3mxSeD8IjeZJ8abnFIpw9QNahwAlEaXBiQUBLXKWRzOmSr8HQ==', 'dhMTBkzwDKxnD;4KNs,4ENy', 'ROLE_USER'),
-(3, 'admin', 'gqeuP4YJ8hU3ZqGwGikB6+rcZBqefVy+7hTLQkOD+jwVkp4fkS7/gr1rAQfn9VUKWc7bvOD7OsXrQQN5KGHbfg==', 'EDDsl&fBCJB|a5XUtAlnQN8', 'ROLE_ADMIN'),
-(4, 'admin2', 'kAl9V0DN3br0x/pRat97OjTZY4dEqKdqYrB87ECN+CulaHUAPmGTIVKcGLmL/5Hzdk9pCxg0TvzdnqWGriNMfQ==', '13ed3302a14919b060c52cd', 'ROLE_USER');
+(4, 'John', 'test', '', 'ROLE_USER');
 
 -- --------------------------------------------------------
 
@@ -494,7 +539,7 @@ INSERT INTO `t_user` (`usr_id`, `usr_name`, `usr_password`, `usr_salt`, `usr_rol
 CREATE TABLE IF NOT EXISTS `villes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `inseeVille` varchar(45) COLLATE utf8_unicode_520_ci DEFAULT NULL,
-  `nom` varchar(45) COLLATE utf8_unicode_520_ci DEFAULT NULL,
+  `commune` varchar(45) COLLATE utf8_unicode_520_ci DEFAULT NULL,
   `codePostal` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_520_ci AUTO_INCREMENT=10103 ;
@@ -503,7 +548,7 @@ CREATE TABLE IF NOT EXISTS `villes` (
 -- Contenu de la table `villes`
 --
 
-INSERT INTO `villes` (`id`, `inseeVille`, `nom`, `codePostal`) VALUES
+INSERT INTO `villes` (`id`, `inseeVille`, `commune`, `codePostal`) VALUES
 (1, '1001', 'L ABERGEMENT CLEMENCIAT', 1400),
 (2, '1002', 'L ABERGEMENT DE VAREY', 1640),
 (3, '1004', 'AMBERIEU EN BUGEY', 1500),
@@ -1962,7 +2007,7 @@ INSERT INTO `villes` (`id`, `inseeVille`, `nom`, `codePostal`) VALUES
 (1456, '3217', 'ST ANGEL', 3170),
 (1457, '3218', 'ST AUBIN LE MONIAL', 3160),
 (1458, '3219', 'ST BONNET DE FOUR', 3390);
-INSERT INTO `villes` (`id`, `inseeVille`, `nom`, `codePostal`) VALUES
+INSERT INTO `villes` (`id`, `inseeVille`, `commune`, `codePostal`) VALUES
 (1459, '3220', 'ST BONNET DE ROCHEFORT', 3800),
 (1460, '3221', 'ST BONNET TRONCAIS', 3360),
 (1461, '3222', 'ST CAPRAIS', 3190),
@@ -3390,7 +3435,7 @@ INSERT INTO `villes` (`id`, `inseeVille`, `nom`, `codePostal`) VALUES
 (2883, '8471', 'VERRIERES', 8390),
 (2884, '8472', 'VIEL ST REMY', 8270),
 (2885, '8473', 'VIEUX LES ASFELD', 8190);
-INSERT INTO `villes` (`id`, `inseeVille`, `nom`, `codePostal`) VALUES
+INSERT INTO `villes` (`id`, `inseeVille`, `commune`, `codePostal`) VALUES
 (2886, '8475', 'VILLERS CERNAY', 8140),
 (2887, '8476', 'VILLERS DEVANT LE THOUR', 8190),
 (2888, '8477', 'VILLERS DEVANT MOUZON', 8210),
@@ -4756,7 +4801,7 @@ INSERT INTO `villes` (`id`, `inseeVille`, `nom`, `codePostal`) VALUES
 (4248, '12130', 'LIVINHAC LE HAUT', 12300),
 (4249, '12131', 'LA LOUBIERE', 12740),
 (4250, '12133', 'LUC LA PRIMAUBE', 12450);
-INSERT INTO `villes` (`id`, `inseeVille`, `nom`, `codePostal`) VALUES
+INSERT INTO `villes` (`id`, `inseeVille`, `commune`, `codePostal`) VALUES
 (4251, '12134', 'LUGAN', 12220),
 (4252, '12135', 'LUNAC', 12270),
 (4253, '12136', 'MALEVILLE', 12350),
@@ -6073,9 +6118,9 @@ INSERT INTO `villes` (`id`, `inseeVille`, `nom`, `codePostal`) VALUES
 (5564, '16030', 'BARRET', 16300),
 (5565, '16031', 'BARRO', 16700),
 (5566, '16032', 'BASSAC', 16120),
-(5567, '16033', 'BAYERS', 16460),
-(5568, '16034', 'BAZAC', 16210);
-INSERT INTO `villes` (`id`, `inseeVille`, `nom`, `codePostal`) VALUES
+(5567, '16033', 'BAYERS', 16460);
+INSERT INTO `villes` (`id`, `inseeVille`, `commune`, `codePostal`) VALUES
+(5568, '16034', 'BAZAC', 16210),
 (5569, '16035', 'BEAULIEU SUR SONNETTE', 16450),
 (5570, '16036', 'BECHERESSE', 16250),
 (5571, '16037', 'BELLON', 16210),
@@ -7419,9 +7464,9 @@ INSERT INTO `villes` (`id`, `inseeVille`, `nom`, `codePostal`) VALUES
 (6909, '19207', 'ST GERMAIN LES VERGNES', 19330),
 (6910, '19208', 'ST HILAIRE FOISSAC', 19550),
 (6911, '19209', 'ST HILAIRE LES COURBES', 19170),
-(6912, '19210', 'ST HILAIRE LUC', 19160),
-(6913, '19211', 'ST HILAIRE PEYROUX', 19560);
-INSERT INTO `villes` (`id`, `inseeVille`, `nom`, `codePostal`) VALUES
+(6912, '19210', 'ST HILAIRE LUC', 19160);
+INSERT INTO `villes` (`id`, `inseeVille`, `commune`, `codePostal`) VALUES
+(6913, '19211', 'ST HILAIRE PEYROUX', 19560),
 (6914, '19212', 'ST HILAIRE TAURIEUX', 19400),
 (6915, '19213', 'ST JAL', 19700),
 (6916, '19214', 'ST JULIEN AUX BOIS', 19220),
@@ -8764,10 +8809,10 @@ INSERT INTO `villes` (`id`, `inseeVille`, `nom`, `codePostal`) VALUES
 (8253, '23190', 'ST DOMET', 23190),
 (8254, '23191', 'ST ELOI', 23000),
 (8255, '23192', 'ST ETIENNE DE FURSAC', 23290),
-(8256, '23193', 'STE FEYRE', 23000),
+(8256, '23193', 'STE FEYRE', 23000);
+INSERT INTO `villes` (`id`, `inseeVille`, `commune`, `codePostal`) VALUES
 (8257, '23194', 'STE FEYRE LA MONTAGNE', 23500),
-(8258, '23195', 'ST FIEL', 23000);
-INSERT INTO `villes` (`id`, `inseeVille`, `nom`, `codePostal`) VALUES
+(8258, '23195', 'ST FIEL', 23000),
 (8259, '23196', 'ST FRION', 23500),
 (8260, '23197', 'ST GEORGES LA POUGE', 23250),
 (8261, '23198', 'ST GEORGES NIGREMONT', 23500),
@@ -10072,10 +10117,10 @@ INSERT INTO `villes` (`id`, `inseeVille`, `nom`, `codePostal`) VALUES
 (9560, '26084', 'CHATEAUNEUF SUR ISERE', 26300),
 (9561, '26085', 'CHATEAUNEUF DU RHONE', 26780),
 (9562, '26086', 'CHATILLON EN DIOIS', 26410),
-(9563, '26087', 'CHATILLON ST JEAN', 26750),
+(9563, '26087', 'CHATILLON ST JEAN', 26750);
+INSERT INTO `villes` (`id`, `inseeVille`, `commune`, `codePostal`) VALUES
 (9564, '26088', 'CHATUZANGE LE GOUBET', 26300),
-(9565, '26089', 'CHAUDEBONNE', 26110);
-INSERT INTO `villes` (`id`, `inseeVille`, `nom`, `codePostal`) VALUES
+(9565, '26089', 'CHAUDEBONNE', 26110),
 (9566, '26090', 'LA CHAUDIERE', 26340),
 (9567, '26091', 'CHAUVAC LAUX MONTAUX', 26510),
 (9568, '26092', 'CHAVANNES', 26260),
@@ -10619,11 +10664,23 @@ INSERT INTO `villes` (`id`, `inseeVille`, `nom`, `codePostal`) VALUES
 --
 
 --
+-- Contraintes pour la table `filliationparents`
+--
+ALTER TABLE `filliationparents`
+  ADD CONSTRAINT `filliationparents_ibfk_1` FOREIGN KEY (`idNationalites`) REFERENCES `nationalites` (`id`);
+
+--
 -- Contraintes pour la table `residence`
 --
 ALTER TABLE `residence`
-  ADD CONSTRAINT `residence_ibfk_1` FOREIGN KEY (`idrecense`) REFERENCES `recense` (`id`),
   ADD CONSTRAINT `residence_ibfk_3` FOREIGN KEY (`idvilles`) REFERENCES `villes` (`id`);
+
+--
+-- Contraintes pour la table `situationscolaire`
+--
+ALTER TABLE `situationscolaire`
+  ADD CONSTRAINT `situationscolaire_ibfk_2` FOREIGN KEY (`diplome_iddiplome`) REFERENCES `diplome` (`id`),
+  ADD CONSTRAINT `situationscolaire_ibfk_3` FOREIGN KEY (`idrecense`) REFERENCES `recense` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

@@ -2769,6 +2769,10 @@ select[multiple].form-group-lg .form-control {
   border: 1px solid transparent;
   border-radius: 4px;
 }
+#btn.save{
+     padding: 6px 12px;
+}
+
 .btn:focus,
 .btn:active:focus,
 .btn.active:focus,

@@ -3,6 +3,7 @@ use Symfony\Component\Debug\ErrorHandler;
 use Symfony\Component\Debug\ExceptionHandler;
 use Symfony\Component\HttpFoundation\Request;
 
+
 // Register global error and exception handlers
 ErrorHandler::register();
 ExceptionHandler::register();
@@ -31,28 +32,13 @@ $app->register(new Silex\Provider\SecurityServiceProvider(), array(
             }),
         ),
     ),
-    'security.role_hierarchy' => array(
-        'ROLE_ADMIN' => array('ROLE_USER'),
-    ),
     'security.access_rules' => array(
-        array('^/admin', 'ROLE_ADMIN'),
+        array('^/home', 'ROLE_USER'),
     ),
 ));
 $app->register(new Silex\Provider\FormServiceProvider());
 $app->register(new Silex\Provider\TranslationServiceProvider());
-/*
-$app->register(new Silex\Provider\MonologServiceProvider(), array(
-    'monolog.logfile' => __DIR__.'/../var/logs/microcms.log',
-    'monolog.name' => 'OC-MicroCMS',
-    'monolog.level' => $app['monolog.level']
-));
-$app->register(new Silex\Provider\ServiceControllerServiceProvider());
-if (isset($app['debug']) && $app['debug']) {
-    $app->register(new Silex\Provider\WebProfilerServiceProvider(), array(
-        'profiler.cache_dir' => __DIR__.'/../var/cache/profiler'
-    ));
-}
-*/
+
 // Register services
 $app['dao.recense'] = $app->share(function ($app) {
    return new MicroCMS\DAO\RecenseDAO($app['db']); 
@@ -65,18 +51,51 @@ $app['dao.residence'] = $app->share(function ($app) {
 $app['dao.user'] = $app->share(function ($app) {
     return new MicroCMS\DAO\UserDAO($app['db']);
 });
+
+$app['dao.villes'] = $app->share(function ($app) {
+    return new MicroCMS\DAO\VillesDAO($app['db']);
+});
+
+$app['dao.filliationParent'] = $app->share(function ($app) {
+    return new MicroCMS\DAO\FilliationParentDAO($app['db']);
+});
+
+$app['dao.nationalites'] = $app->share(function ($app) {
+    return new MicroCMS\DAO\NationalitesDAO($app['db']);
+});
+
+$app['dao.situationFamille'] = $app->share(function ($app) {
+    return new MicroCMS\DAO\SituationFamilleDAO($app['db']);
+});
+
+
+$app['dao.situationMatrimonial'] = $app->share(function ($app) {
+    return new MicroCMS\DAO\SituationMatrimonialDAO($app['db']);
+});
+
+
+$app['dao.situationScolaire'] = $app->share(function ($app) {
+    return new MicroCMS\DAO\SituationScolaireDAO($app['db']);
+});
+
+
+$app['dao.profession'] = $app->share(function ($app) {
+    return new MicroCMS\DAO\ProfessionDAO($app['db']);
+});
+
+
 /*
 // Register error handler
 $app->error(function (\Exception $e, $code) use ($app) {
     switch ($code) {
         case 403:
-            $message = 'Access denied.';
+            $message = 'Access refusé.';
             break;
         case 404:
-            $message = 'The requested resource could not be found.';
+            $message = 'La requete ne peut etre trouvé.';
             break;
         default:
-            $message = "Something went wrong.";
+            $message = "Quelque chose ne va pas.";
     }
     return $app['twig']->render('error.html.twig', array('message' => $message));
 });
