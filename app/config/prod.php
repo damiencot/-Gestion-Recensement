@@ -6,8 +6,8 @@ $app['db.options'] = array(
     'charset'  => 'utf8',
     'host'     => 'localhost',
     'port'     => '3306',
-    'dbname'   => 'recensement_v0',
-    'user'     => 'root',
+    'dbname'   => '',
+    'user'     => '',
     'password' => '',
 );
 
